@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Kids Map Test Page</title>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBx9YAG2RqGH_TZd5fyD2Cqhc_32_tjkks&sensor=false&libraries=geometry,places"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+		<style>
+			#map {
+				height: 400px;
+				width: 600px;
+				border: 1px solid #333;
+				margin-top: 0.6em;
+			}
+		</style>
+
+		<script>
+			var map;
+			var infowindow;
+			var centralLocation = null;
+			var gmarkers = [];
+			var address = null;
+			var lat = null;
+			var lng = null;
+			var service = null;
+			var bounds = null;
+			var request = null;
+			var directionsDisplay;
+			var directionsService;
+			var directionsDest;
+
+			//The degree to which the map is zoomed in. This can range from 0 (least zoomed) to 21 and above (most zoomed).
+			var mapZoom = 4;
+
+			function initialize() {
+				console.log("In initialize");
+				//centralLocation = new google.maps.LatLng(39.892517, -105.114201); // 80021
+				centralLocation = new google.maps.LatLng(37.090240, -95.712891); 
+
+				request = {
+					location: centralLocation,
+					types: ['park'],
+					rankBy: google.maps.places.RankBy.DISTANCE
+					//radius: 5000
+				};
+				infowindow = new google.maps.InfoWindow();
+				bounds = new google.maps.LatLngBounds();
+
+				var mapOptions = {
+					zoom: mapZoom,
+					mapTypeId: google.maps.MapTypeId.ROADMAP,
+					center: centralLocation
+				};
+				map = new google.maps.Map(document.getElementById('map'), mapOptions);
+				service = new google.maps.places.PlacesService(map);
+
+				directionsService = new google.maps.DirectionsService();
+				directionsDisplay = new google.maps.DirectionsRenderer();
+				directionsDisplay.setMap(map);
+			}
+
+
+			function calcRoute(start, end) {
+			  // DRIVING, WALKING, BICYCLING, TRANSIT
+			  var selectedMode = "TRANSIT";
+
+			  var request = {
+			      origin:start,
+			      destination:end,
+			      // Note that Javascript allows us to access the constant
+			      // using square brackets and a string value as its
+			      // "property."
+			      travelMode: google.maps.TravelMode[selectedMode]
+			  };
+			  directionsService.route(request, function(response, status) {
+			    if (status == google.maps.DirectionsStatus.OK) {
+			      directionsDisplay.setDirections(response);
+			    }
+			  });
+			}
+
+
+			function showAddress() {
+				console.log("showAddress");
+				var search = document.getElementById("search").value;
+				var category = document.getElementById("category").value;
+				category = category.split(',');
+				console.log("1searching for: " + search + ", and category: " + category);
+
+				$('#details').empty();
+				$('table').empty();
+				clearMarkers();
+
+				doMapSearch(search, category);
+
+			}
+
+			function doMapSearch(searchAddress, category) {
+				address = unescape(searchAddress);
+				geocoder = new google.maps.Geocoder();
+				console.log("2searching for: " + address + ", and category: " + category);
+
+				geocoder.geocode({address: address}, function(results, status) {
+					if (status == google.maps.GeocoderStatus.OK) {
+						centralLocation = results[0].geometry.location;
+						console.log( centralLocation );
+			 			map.setCenter(centralLocation);
+						map.fitBounds(results[0].geometry.viewport);
+						if (!service) service = new google.maps.places.PlacesService(map);
+						request.location = centralLocation;
+						request.types = category;
+						var marker = new google.maps.Marker({ map: map, 
+							icon: { path: google.maps.SymbolPath.CIRCLE, scale: 10 },
+							position: centralLocation });
+						console.log("doing custom search, request = ");
+						console.log(request);
+						service.nearbySearch(request, callback);
+					} else {
+						alert("Address "+address+ " not found.");
+					}
+				});
+			}
+
+
+			function callback(results, status) {
+				console.log("in callback, num results = " + results.length);
+				if (status == google.maps.places.PlacesServiceStatus.OK) {
+					for (var i = 0; i < results.length; i++) {
+						createMarker(results[i]);
+					}
+					if ( results.length ) showDetails(results[0]);
+					directionsDest = results[0].geometry.location;
+				}
+
+			}
+
+
+			function showDetails( detailPlace ) {
+				console.log("in showDetails, detailPlace = ");
+				console.log(detailPlace);
+
+				var $details = $('#details').detach();
+
+				var request = { reference: detailPlace.reference };
+				service.getDetails(request, function(place, status) {
+					if (status == google.maps.places.PlacesServiceStatus.OK) {
+						
+						console.log("details = ");
+						console.log(place);
+
+						$details.append("<h2>Details for first result:</h2>");
+						$details.append(place.name);
+						$details.append("<br/>");
+						$details.append(place.formatted_address);
+						$details.append("<br/>");
+						$details.append(place.formatted_phone_number);
+						$details.append("<br/>");
+						$details.append("<a class='directions-button' href='#' onclick='getDirections();return false;'>Get Directions</a><br/>");
+
+						$details.append("<a href='" + place.website + "'>" + place.website + "</a>");
+						$details.append("<br/>");
+						if( place.rating ) $details.append(place.rating + " stars");
+						$details.append("<div>Hours: " + showHours(place) + "</div>");
+						$details.append("<h3>Reviews:</h3>");
+						$details.append( showReviews(place) );
+						$details.append("<h3>Photos:</h3>");
+						$details.append( showPhotos(place) );
+						$details.append("<br/>");
+
+
+						$details.appendTo('body');
+					}
+				});
+
+			}
+
+			function dayOfWeekAsInteger(day) {
+				return ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][day];
+			}
+
+			function showHours ( hoursPlace ) {
+				var hours = "";
+				var time = "";
+				if ( hoursPlace.opening_hours ) {
+
+					console.log( "found hours" );
+
+					for ( var i=0; i<hoursPlace.opening_hours.periods.length; i++) {
+						
+						console.log( dayOfWeekAsInteger(i) );
+						hours += "<div class='hours'>" + dayOfWeekAsInteger(i) + " ";
+
+						time = hoursPlace.opening_hours.periods[i].open.time;
+						hours += [(time/100).toFixed(0),time.substr(-2)].join(':');
+						hours += " - ";
+						time = hoursPlace.opening_hours.periods[i].close.time;
+						hours += [(time/100).toFixed(0),time.substr(-2)].join(':');
+						hours += "</div>";
+					}
+				}
+				return hours;
+
+			}
+
+			function showReviews( reviewsPlace ) {
+				console.log("In showReviews");
+				var reviews = "";
+				var reviewsArr = reviewsPlace.reviews;
+				for (var i =0; reviewsArr && i<reviewsArr.length; i++) {
+					reviews += "<div class='review'><a href='" + reviewsArr[i].author_url + "'>" +
+						reviewsArr[i].author_name + "</a>";
+					reviews += "<div>" + reviewsArr[i].rating + " out of 5 stars, reviewed " + new Date( reviewsArr[i].time ).toDateString() + "</div>";
+					reviews += "<div>" + reviewsArr[i].text + "</div>";
+					reviews += "</div><br/>";
+				}
+				return reviews;
+			}
+
+			function showPhotos( photosPlace ) {
+				console.log("In showPhotos");
+				var photos = "";
+				var photoArr = photosPlace.photos;
+				for (var i =0; photoArr && i<photoArr.length; i++) {
+					photos += "<div class='photo'><img src='" + photoArr[i].getUrl({maxHeight: 500, maxWidth: 500}) + "' width='500' />";	
+					var attributionsArr =  photoArr[i].html_attributions; 
+					for (var j=0; j<attributionsArr.length; j++ ) {
+						photos += "<div>" + attributionsArr[j] + "</div>";	
+					}
+					photos += "</div>";
+				}
+				return photos;
+
+			}
+
+
+			function createMarker(place) {
+				console.log("in createMarker");
+
+				var placeLoc = place.geometry.location;
+				var marker = new google.maps.Marker({
+					map: map,
+					// icon: place.icon,
+					position: place.geometry.location
+				});
+				bounds.extend(place.geometry.location);
+				gmarkers.push(marker);
+				google.maps.event.addListener(marker, 'click', function() {
+					infowindow.setContent(place.name+"<br>"+place.vicinity+"<br>"+place.types.join(","));
+					infowindow.open(map, this);
+				});
+
+				var typesList = "";
+				for (var j = 0; j < place.types.length; j++) {
+					typesList += place.types[j];
+					if (j < place.types.length-1)
+						typesList += ", ";
+				}
+
+				$('table').append("<tr><td><a href='javascript:google.maps.event.trigger(gmarkers["+ 
+					(gmarkers.length-1)+"],\"click\");'>" + place.name + "</a></td><td>" + 
+					place.vicinity + "</td><td>" + typesList + "</td><td>" + 
+					(google.maps.geometry.spherical.computeDistanceBetween(centralLocation, place.geometry.location)/1609.344).toFixed(2) + " miles</td></tr>");
+
+				map.fitBounds(bounds);
+			}
+
+			function clearMarkers() {
+				for (var i = 0; i < gmarkers.length; i++) {
+					gmarkers[i].setMap(null);
+				}
+				gmarkers = [];
+			}
+
+			function getDirections() {
+				var start = prompt( "Enter starting location:" );
+				var end = directionsDest;
+				console.log("Calculating from " + start + " to " + end);
+				calcRoute(start, end);
+
+			}
+
+			google.maps.event.addDomListener(window, 'load', initialize);
+		</script>
+	</head>
+	<body>
+		<form onsubmit="showAddress(); return false" action="#">
+			<input id="search" size="60" type="text" value="80021" />
+			<!-- <input type="button" onclick="javascript:myMap.clearOverlays();return false" value="Clear markers" /><br/> -->
+			<input id="category" size="60" type="text" value="park" />
+			<input type="submit" value="Go!" />
+		</form>
+
+		<div id="map"></div>
+		<div id="side_bar"><table border=1></table></div>
+		<div id="details"></details>
+
+	</body>
+</html>

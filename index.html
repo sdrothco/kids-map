@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Kid's Fun Map</title>
+	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/main.css">
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBx9YAG2RqGH_TZd5fyD2Cqhc_32_tjkks&sensor=false&libraries=geometry,places"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="js/app.js"></script>
+	<link href='http://fonts.googleapis.com/css?family=Fredericka+the+Great|Leckerli+One' rel='stylesheet' type='text/css'>
+</head>
+<body>
+	<header>
+		<h1><span class="script">Let's </span><span class="block">Go Have Fun </span>
+		<span class="script">With Kids!</span></h1>	
+		<div class="container rainbow-line">
+			<div class="column column-20 accent-color-1 rainbow-line no-margin"></div>
+			<div class="column column-20 accent-color-2 rainbow-line no-margin"></div>
+			<div class="column column-20 accent-color-3 rainbow-line no-margin"></div>
+			<div class="column column-20 accent-color-4 rainbow-line no-margin"></div>
+			<div class="column column-20 accent-color-5 rainbow-line no-margin last"></div>
+		</div>
+	</header>
+	<section>
+		<div class="container">
+
+			<div class="result-list column column-25">
+				<h3>Results Found:</h3>
+				<ol>
+				<li><div class="result-item">			
+					<div class="result-name">Jump City</div>	
+					<!-- <div class="result-addr">9979 Wadsworth Pkwy, Westminster</div> -->
+					<div class="result-category">amusement_park</div>
+					<div class="result-dist">1.43 miles</div>
+				</div></li>
+				<li><div class="result-item">			
+					<div class="result-name">Chipper's Lanes</div>
+					<!-- <div class="result-addr">100 Nickel St, Broomfield</div> -->
+					<div class="result-category">bowling_alley, amusement_park</div>
+					<div class="result-dist">2.29 miles</div>
+				</div></li>
+				<li><div class="result-item">			
+					<div class="result-name">Butterfly Pavilion</div>
+					<!-- <div class="result-addr">6252 W 104th Ave, Westminster</div> -->
+					<div class="result-category">aquarium, park, zoo, amusement_park</div>
+					<div class="result-dist">2.56 miles</div>
+				</div></li>
+				</ol>
+			</div>
+
+			<div class="search-wrapper column column-75 last">
+				<form id="search-form" onsubmit="" action="#">
+					<label>Near: <input id="search" type="text" value="80021" /></label>
+					<input type="submit" value="Go!" />
+					<div class="category-label" ><a href="#">Categories <div class="arrow-down"></div><div class="arrow-right"></div></a></div>
+					<div class="category-boxes container">
+						<label class="column column-33">
+							<input type="checkbox" name="checkbox" value="all">
+							<span class="box-label">All</span>
+						</label>
+					</div>
+				</form>
+				<div class="map-content">
+				<div class="map-wrapper"><div id="map"></div></div>
+				</div>
+				<!-- <div id="details"></details> -->
+			</div>
+		</div>
+	</section>
+
+	<div class="hidden">
+		<label class="chkbox-example column column-33">
+			<input class="search-cats" type="checkbox" name="search-cats" value="value">
+			<span class="box-label"></span>
+		</label>
+		<ol><li><div class="result-item">			
+			<div class="result-name">Butterfly Pavilion</div>
+			<!-- <div class="result-addr">6252 W 104th Ave, Westminster</div> -->
+			<div class="result-category">aquarium, park, zoo, amusement_park</div>
+			<div class="result-dist">2.56 miles</div>
+		</div></li></ol>
+	</div>
+	
+</body>
+</html>

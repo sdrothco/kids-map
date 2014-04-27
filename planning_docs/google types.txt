@@ -1,0 +1,10 @@
+
+amusement_park
+aquarium
+bowling_alley
+library
+movie_theater
+museum
+park
+zoo
+

@@ -1,0 +1,338 @@
+/* apply a natural box layout model to all elements */
+/* line 11, ../sass/main.scss */
+*, *:before, *:after {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* line 17, ../sass/main.scss */
+h1, h2, h3, h4, h5, h6, b, strong {
+  font-weight: bold;
+}
+
+/* line 20, ../sass/main.scss */
+h1 {
+  font-size: 1.75em;
+}
+
+/* line 21, ../sass/main.scss */
+h2 {
+  font-size: 1.5em;
+}
+
+/* line 22, ../sass/main.scss */
+h3 {
+  font-size: 1.125em;
+}
+
+/* line 23, ../sass/main.scss */
+h4 {
+  font-size: 0.875em;
+}
+
+/* line 24, ../sass/main.scss */
+h5 {
+  font-size: 0.75em;
+}
+
+/* line 25, ../sass/main.scss */
+h6 {
+  font-size: 0.625;
+}
+
+/* line 26, ../sass/main.scss */
+p {
+  font-size: 0.75em;
+  padding-bottom: 1.125px;
+}
+
+/* line 32, ../sass/main.scss */
+html, body {
+  height: 100%;
+  min-height: 100%;
+  width: 95%;
+  margin: 0 auto;
+}
+
+/* line 40, ../sass/main.scss */
+section {
+  height: 100%;
+  width: 100%;
+}
+
+/* line 46, ../sass/main.scss */
+body {
+  max-width: 960px;
+  margin: 0 auto;
+  background-color: #bfe1ed;
+  font-size: 16px;
+  font-family: Helvetica;
+  line-height: 1.15;
+}
+
+/* line 55, ../sass/main.scss */
+header {
+  background-color: white;
+  margin-bottom: 2%;
+}
+/* line 58, ../sass/main.scss */
+header h1 {
+  padding: .5em 0;
+  text-align: center;
+}
+
+/* line 64, ../sass/main.scss */
+.rainbow-line {
+  height: 1em;
+  padding: 0;
+  margin: 0;
+}
+
+/* line 69, ../sass/main.scss */
+.accent-color-1 {
+  background-color: #f5f549;
+}
+
+/* line 72, ../sass/main.scss */
+.accent-color-2 {
+  background-color: #e63740;
+}
+
+/* line 75, ../sass/main.scss */
+.accent-color-3 {
+  background-color: #60b5d1;
+}
+
+/* line 78, ../sass/main.scss */
+.accent-color-4 {
+  background-color: #91d63c;
+}
+
+/* line 81, ../sass/main.scss */
+.accent-color-5 {
+  background-color: #fc7e00;
+}
+
+/* line 85, ../sass/main.scss */
+.script {
+  font-family: 'Leckerli One', 'cursive';
+  font-weight: normal;
+  font-size: 1.3em;
+}
+
+/* line 91, ../sass/main.scss */
+.block {
+  font-family: 'Fredericka the Great', 'cursive';
+  font-weight: normal;
+  font-size: 2em;
+}
+
+/* line 98, ../sass/main.scss */
+.result-list {
+  /*background-color: white;*/
+}
+
+/* line 102, ../sass/main.scss */
+ol li, ul li {
+  list-style-position: inside;
+  padding: 0.5em 0;
+}
+
+/* line 106, ../sass/main.scss */
+ol li {
+  list-style-type: decimal;
+}
+
+/* line 107, ../sass/main.scss */
+ul li {
+  list-style-type: disc;
+}
+
+/* line 109, ../sass/main.scss */
+.result-list li {
+  border-bottom: 3px #fc7e00 solid;
+}
+/* line 111, ../sass/main.scss */
+.result-list li:first-child {
+  border-top: 3px #fc7e00 solid;
+}
+/* line 114, ../sass/main.scss */
+.result-list li:hover {
+  background-color: #60b5d1;
+}
+
+/* line 119, ../sass/main.scss */
+.result-name {
+  font-weight: bold;
+}
+
+/* line 123, ../sass/main.scss */
+.result-category {
+  display: none;
+}
+
+/* line 127, ../sass/main.scss */
+.result-dist {
+  text-align: right;
+  font-size: .8em;
+}
+
+/* line 133, ../sass/main.scss */
+.search-wrapper {
+  height: 100%;
+}
+/* line 135, ../sass/main.scss */
+.search-wrapper form {
+  margin-bottom: 2%;
+}
+
+/* line 140, ../sass/main.scss */
+#search {
+  width: 85%;
+}
+
+/* line 144, ../sass/main.scss */
+.map-content {
+  height: 75%;
+  min-height: 75%;
+  position: relative;
+}
+
+/* line 149, ../sass/main.scss */
+.map-wrapper {
+  right: 0;
+  bottom: 0;
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  padding-bottom: 10%;
+  position: absolute;
+}
+
+/* line 158, ../sass/main.scss */
+#map {
+  height: 100%;
+  width: 100%;
+  border: 1px solid #555;
+}
+
+/* line 163, ../sass/main.scss */
+.category-boxes {
+  display: block;
+  font-size: .8em;
+}
+
+/* line 168, ../sass/main.scss */
+.category-label a {
+  color: black;
+}
+/* line 170, ../sass/main.scss */
+.category-label a:link {
+  text-decoration: none;
+}
+
+/* line 177, ../sass/main.scss */
+.arrow-right {
+  display: none;
+  border-color: transparent black;
+  border-style: solid;
+  border-width: 10px 0px 10px 10px;
+  height: 0px;
+  width: 0px;
+}
+
+/* line 186, ../sass/main.scss */
+.arrow-down {
+  display: inline-block;
+  border-color: black transparent;
+  border-style: solid;
+  border-width: 10px 10px 0px 10px;
+  height: 0px;
+  width: 0px;
+}
+
+/* For the GRID SYSTEM */
+/* line 198, ../sass/main.scss */
+.container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border: 0;
+  clear: both;
+}
+
+/* line 206, ../sass/main.scss */
+.column {
+  float: left;
+  margin-right: .5%;
+  padding: 4px;
+}
+
+/* line 212, ../sass/main.scss */
+.last {
+  margin-right: 0 !important;
+}
+
+/* line 216, ../sass/main.scss */
+.put-at-bottom {
+  position: absolute;
+  bottom: 10px;
+}
+
+/* line 221, ../sass/main.scss */
+.tall {
+  min-height: 400px;
+  padding-bottom: 45px;
+}
+
+/* line 226, ../sass/main.scss */
+.column-20 {
+  width: 20%;
+}
+
+/* line 230, ../sass/main.scss */
+.column-25 {
+  width: 24.5%;
+}
+
+/* line 234, ../sass/main.scss */
+.column-33 {
+  width: 32.5%;
+}
+
+/* line 238, ../sass/main.scss */
+.column-50 {
+  width: 49.5%;
+}
+
+/* line 242, ../sass/main.scss */
+.column-66 {
+  width: 66%;
+}
+
+/* line 246, ../sass/main.scss */
+.column-75 {
+  width: 74.5%;
+}
+
+/* line 250, ../sass/main.scss */
+.column-100 {
+  margin-right: 0 !important;
+  width: 100%;
+}
+
+/* line 255, ../sass/main.scss */
+.non-hidden-overflow {
+  overflow: visible;
+}
+
+/* line 259, ../sass/main.scss */
+.no-margin {
+  margin: 0;
+}
+
+/* line 263, ../sass/main.scss */
+.hidden {
+  display: none;
+}
