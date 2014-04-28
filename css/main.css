@@ -131,75 +131,84 @@ header h1 {
 /* line 98, ../sass/main.scss */
 .result-list {
   /*background-color: white;*/
+  visibility: hidden;
 }
 
-/* line 102, ../sass/main.scss */
+/* line 103, ../sass/main.scss */
 ol li, ul li {
   list-style-position: inside;
-  padding: 0.5em 0;
+  padding: 0.4em 0;
 }
 
-/* line 106, ../sass/main.scss */
+/* line 107, ../sass/main.scss */
 ol li {
   list-style-type: decimal;
 }
 
-/* line 107, ../sass/main.scss */
+/* line 108, ../sass/main.scss */
 ul li {
   list-style-type: disc;
 }
 
-/* line 109, ../sass/main.scss */
+/* line 110, ../sass/main.scss */
 .result-list li {
-  border-bottom: 3px #fc7e00 solid;
+  border-bottom: 2px #fc7e00 solid;
 }
-/* line 111, ../sass/main.scss */
+/* line 112, ../sass/main.scss */
 .result-list li:first-child {
-  border-top: 3px #fc7e00 solid;
+  border-top: 2px #fc7e00 solid;
+  margin-top: .3em;
 }
-/* line 114, ../sass/main.scss */
+/* line 116, ../sass/main.scss */
 .result-list li:hover {
   background-color: #60b5d1;
 }
 
-/* line 119, ../sass/main.scss */
-.result-name {
-  font-weight: bold;
-}
-
-/* line 123, ../sass/main.scss */
-.result-category {
+/* line 125, ../sass/main.scss */
+.result-cat {
   display: none;
+  font-size: .6em;
 }
 
-/* line 127, ../sass/main.scss */
+/* line 130, ../sass/main.scss */
 .result-dist {
   text-align: right;
   font-size: .8em;
 }
 
-/* line 133, ../sass/main.scss */
+/* line 136, ../sass/main.scss */
+.info-win {
+  min-width: 100px;
+  min-height: 50px;
+}
+
+/* line 141, ../sass/main.scss */
 .search-wrapper {
   height: 100%;
 }
-/* line 135, ../sass/main.scss */
+/* line 143, ../sass/main.scss */
 .search-wrapper form {
   margin-bottom: 2%;
 }
 
-/* line 140, ../sass/main.scss */
+/* line 148, ../sass/main.scss */
 #search {
-  width: 85%;
+  width: 80%;
 }
 
-/* line 144, ../sass/main.scss */
+/* line 152, ../sass/main.scss */
+.search-ctrl {
+  margin-bottom: 1%;
+}
+
+/* line 156, ../sass/main.scss */
 .map-content {
   height: 75%;
   min-height: 75%;
   position: relative;
 }
 
-/* line 149, ../sass/main.scss */
+/* line 161, ../sass/main.scss */
 .map-wrapper {
   right: 0;
   bottom: 0;
@@ -210,29 +219,29 @@ ul li {
   position: absolute;
 }
 
-/* line 158, ../sass/main.scss */
+/* line 170, ../sass/main.scss */
 #map {
   height: 100%;
   width: 100%;
   border: 1px solid #555;
 }
 
-/* line 163, ../sass/main.scss */
+/* line 175, ../sass/main.scss */
 .category-boxes {
   display: block;
   font-size: .8em;
 }
 
-/* line 168, ../sass/main.scss */
+/* line 180, ../sass/main.scss */
 .category-label a {
   color: black;
 }
-/* line 170, ../sass/main.scss */
+/* line 182, ../sass/main.scss */
 .category-label a:link {
   text-decoration: none;
 }
 
-/* line 177, ../sass/main.scss */
+/* line 189, ../sass/main.scss */
 .arrow-right {
   display: none;
   border-color: transparent black;
@@ -242,7 +251,7 @@ ul li {
   width: 0px;
 }
 
-/* line 186, ../sass/main.scss */
+/* line 198, ../sass/main.scss */
 .arrow-down {
   display: inline-block;
   border-color: black transparent;
@@ -253,7 +262,7 @@ ul li {
 }
 
 /* For the GRID SYSTEM */
-/* line 198, ../sass/main.scss */
+/* line 210, ../sass/main.scss */
 .container {
   width: 100%;
   height: 100%;
@@ -262,77 +271,77 @@ ul li {
   clear: both;
 }
 
-/* line 206, ../sass/main.scss */
+/* line 218, ../sass/main.scss */
 .column {
   float: left;
   margin-right: .5%;
   padding: 4px;
 }
 
-/* line 212, ../sass/main.scss */
+/* line 224, ../sass/main.scss */
 .last {
   margin-right: 0 !important;
 }
 
-/* line 216, ../sass/main.scss */
+/* line 228, ../sass/main.scss */
 .put-at-bottom {
   position: absolute;
   bottom: 10px;
 }
 
-/* line 221, ../sass/main.scss */
+/* line 233, ../sass/main.scss */
 .tall {
   min-height: 400px;
   padding-bottom: 45px;
 }
 
-/* line 226, ../sass/main.scss */
+/* line 238, ../sass/main.scss */
 .column-20 {
   width: 20%;
 }
 
-/* line 230, ../sass/main.scss */
+/* line 242, ../sass/main.scss */
 .column-25 {
   width: 24.5%;
 }
 
-/* line 234, ../sass/main.scss */
+/* line 246, ../sass/main.scss */
 .column-33 {
   width: 32.5%;
 }
 
-/* line 238, ../sass/main.scss */
+/* line 250, ../sass/main.scss */
 .column-50 {
   width: 49.5%;
 }
 
-/* line 242, ../sass/main.scss */
+/* line 254, ../sass/main.scss */
 .column-66 {
   width: 66%;
 }
 
-/* line 246, ../sass/main.scss */
+/* line 258, ../sass/main.scss */
 .column-75 {
   width: 74.5%;
 }
 
-/* line 250, ../sass/main.scss */
+/* line 262, ../sass/main.scss */
 .column-100 {
   margin-right: 0 !important;
   width: 100%;
 }
 
-/* line 255, ../sass/main.scss */
+/* line 267, ../sass/main.scss */
 .non-hidden-overflow {
   overflow: visible;
 }
 
-/* line 259, ../sass/main.scss */
+/* line 271, ../sass/main.scss */
 .no-margin {
   margin: 0;
 }
 
-/* line 263, ../sass/main.scss */
+/* line 275, ../sass/main.scss */
 .hidden {
   display: none;
 }

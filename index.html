@@ -23,46 +23,39 @@
 		</div>
 	</header>
 	<section>
-		<div class="container">
+		<div class="container non-hidden-overflow">
 
 			<div class="result-list column column-25">
 				<h3>Results Found:</h3>
 				<ol>
-				<li><div class="result-item">			
-					<div class="result-name">Jump City</div>	
-					<!-- <div class="result-addr">9979 Wadsworth Pkwy, Westminster</div> -->
-					<div class="result-category">amusement_park</div>
-					<div class="result-dist">1.43 miles</div>
-				</div></li>
-				<li><div class="result-item">			
-					<div class="result-name">Chipper's Lanes</div>
-					<!-- <div class="result-addr">100 Nickel St, Broomfield</div> -->
-					<div class="result-category">bowling_alley, amusement_park</div>
-					<div class="result-dist">2.29 miles</div>
-				</div></li>
-				<li><div class="result-item">			
-					<div class="result-name">Butterfly Pavilion</div>
-					<!-- <div class="result-addr">6252 W 104th Ave, Westminster</div> -->
-					<div class="result-category">aquarium, park, zoo, amusement_park</div>
-					<div class="result-dist">2.56 miles</div>
-				</div></li>
+				
 				</ol>
 			</div>
 
 			<div class="search-wrapper column column-75 last">
+				<!-- <div class="map-content">
+					<div class="map-wrapper">
+						<div id="map"></div>
+					</div>
+				</div> -->
+
 				<form id="search-form" onsubmit="" action="#">
-					<label>Near: <input id="search" type="text" value="80021" /></label>
-					<input type="submit" value="Go!" />
+					<div class="search-ctrl">
+						<label>Near: <input id="search" type="text" value="80021" /></label>
+						<input type="submit" value="Go!" />
+					</div>
 					<div class="category-label" ><a href="#">Categories <div class="arrow-down"></div><div class="arrow-right"></div></a></div>
 					<div class="category-boxes container">
 						<label class="column column-33">
-							<input type="checkbox" name="checkbox" value="all">
+							<input id="all-chkbox" type="checkbox" name="checkbox" value="all">
 							<span class="box-label">All</span>
 						</label>
 					</div>
 				</form>
 				<div class="map-content">
-				<div class="map-wrapper"><div id="map"></div></div>
+					<div class="map-wrapper">
+						<div id="map"></div>
+					</div>
 				</div>
 				<!-- <div id="details"></details> -->
 			</div>
@@ -74,12 +67,11 @@
 			<input class="search-cats" type="checkbox" name="search-cats" value="value">
 			<span class="box-label"></span>
 		</label>
-		<ol><li><div class="result-item">			
-			<div class="result-name">Butterfly Pavilion</div>
-			<!-- <div class="result-addr">6252 W 104th Ave, Westminster</div> -->
-			<div class="result-category">aquarium, park, zoo, amusement_park</div>
-			<div class="result-dist">2.56 miles</div>
-		</div></li></ol>
+		<ol><li class="result-item">
+			<div class="result-name"></div>
+			<div class="result-cat"></div>
+			<div class="result-dist"></div>
+		</li></ol>
 	</div>
 	
 </body>

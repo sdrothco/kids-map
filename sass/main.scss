@@ -97,19 +97,21 @@ header {
 
 .result-list {
 	/*background-color: white;*/
+	visibility: hidden;
 }
 
 ol li, ul li {
 	list-style-position: inside;
-	padding: 0.5em 0;
+	padding: 0.4em 0;
 }
 ol li { list-style-type: decimal; }
 ul li { list-style-type: disc; }
 
 .result-list li {
-	border-bottom: 3px $accent-color-5 solid;
+	border-bottom: 2px $accent-color-5 solid;
 	&:first-child {
-		border-top: 3px $accent-color-5 solid;
+		border-top: 2px $accent-color-5 solid;
+		margin-top: .3em;
 	}
 	&:hover {
 		background-color: $accent-color-3;
@@ -117,11 +119,12 @@ ul li { list-style-type: disc; }
 }
 
 .result-name {
-	font-weight: bold;
+	// font-weight: bold;
 }
 
-.result-category {
+.result-cat {
 	display: none;
+	font-size: .6em;
 }
 
 .result-dist {
@@ -129,6 +132,11 @@ ul li { list-style-type: disc; }
 	font-size: .8em;
 }
 
+
+.info-win {
+	min-width: 100px;
+	min-height: 50px;
+}
 
 .search-wrapper {
 	height:100%;
@@ -138,7 +146,11 @@ ul li { list-style-type: disc; }
 }
 
 #search {
-	width: 85%;
+	width: 80%;
+}
+
+.search-ctrl {
+	margin-bottom: 1%;
 }
 
 .map-content {
