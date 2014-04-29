@@ -20,7 +20,8 @@ $(document).ready(function(){
 	var box = null;
 	var myMap = new Map();
 
-	$( "#tabs" ).tabs();
+	// $( "#tabs" ).tabs();
+	$( "#accordion" ).accordion();
 
 	google.maps.event.addDomListener(window, 'load', myMap);
 
@@ -48,11 +49,13 @@ $(document).ready(function(){
 
 		$('.category-boxes').toggle();
 		if( $('.category-boxes').is(':visible') ) {
-			$('.arrow-down').css('display', 'inline-block');
-			$('.arrow-right').css('display', 'none');
+            $('.category-label span').removeClass('arrow-right').addClass('arrow-down');
+			// $('.arrow-down').css('display', 'inline-block');
+			// $('.arrow-right').css('display', 'none');
 		} else {
-			$('.arrow-down').css('display', 'none');
-			$('.arrow-right').css('display', 'inline-block');
+            $('.category-label span').removeClass('arrow-down').addClass('arrow-right');
+			// $('.arrow-down').css('display', 'none');
+			// $('.arrow-right').css('display', 'inline-block');
 		}
 		
 	});
@@ -109,6 +112,34 @@ $(document).ready(function(){
 		$('.detail-reviews').empty();
 		$('.detail-photos').empty();
 	});
+
+    $('.collapsible-section a').click( function(e) {
+       e.preventDefault();
+        console.log($(this));
+        
+        if ( $(this).parent().hasClass('section-1') ) {
+            $('.section-2 div, .section-3 div').hide(500);
+            $('.section-2 span, .section-3 span').removeClass('arrow-down').addClass('arrow-right');
+            $(this).parent().find('div').show(500);
+            $(this).find('span').removeClass('arrow-right').addClass('arrow-down');
+            
+        } else if ( $(this).parent().hasClass('section-2') ) {
+            $('.section-1 div, .section-3 div').hide(500);
+            $('.section-1 span, .section-3 span').removeClass('arrow-down').addClass('arrow-right');
+            $(this).parent().find('div').show(500);
+            $(this).find('span').removeClass('arrow-right').addClass('arrow-down');
+            
+        } else if ( $(this).parent().hasClass('section-3') ) {
+            $('.section-1 div, .section-2 div').hide(500);
+            $('.section-1 span, .section-2 span').removeClass('arrow-down').addClass('arrow-right');
+            $(this).parent().find('div').show(500);
+            $(this).find('span').removeClass('arrow-right').addClass('arrow-down');
+        }
+    });
+    
+
+
+
 
 	// Start the page off with all the categories checked
 	$('#all-chkbox').click();

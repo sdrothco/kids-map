@@ -154,6 +154,9 @@ ul li { list-style-type: disc; }
 .category-boxes {
 	display: block;
 	font-size: .8em;
+	background-color: white;
+    border-radius-left-bottom: 5px;
+    border-radius-right-bottom: 5px;
 
 } 
 .category-label a {
@@ -162,22 +165,7 @@ ul li { list-style-type: disc; }
 		text-decoration: none;
 	}
 }
-.arrow-right {
-	display: none;
-	border-color: transparent black;
-	border-style: solid;
-	border-width: 10px 0px 10px 10px;
-	height: 0px;
-	width: 0px;
-}
-.arrow-down {
-	display: inline-block;
-	border-color: black transparent;
-	border-style: solid;
-	border-width: 10px 10px 0px 10px;
-	height: 0px;
-	width: 0px;
-}
+
 
 
 
@@ -212,6 +200,9 @@ ul li { list-style-type: disc; }
 
 
 // Styles for the details page
+.details {
+	display: none;
+}
 .detail-info {
 	margin: 0 auto;
 }
@@ -231,8 +222,8 @@ ul li { list-style-type: disc; }
 .detail-get-directions, .back-to-main {
 	margin: 1em 0;
 	& a { 
-		background-color: $accent-color-5;
-		@include button-grad( top, $accent-color-5, darken($accent-color-5, 15%) );
+		background-color: $accent-color-4;
+		@include button-grad( top, $accent-color-4, darken($accent-color-4, 15%) );
 		@include border-radius-mixin (2em);
 		text-decoration: none;
 		padding: .3em .5em;
@@ -250,6 +241,65 @@ ul li { list-style-type: disc; }
 	height: 250px;
 	width: 250px;
 }
+
+
+
+
+
+.detail-tabbed-section {
+    margin: 20px 0;
+    width: 100%;
+}
+.collapsible-section {
+    margin-top: 8px;
+    background-color: white;
+    border-radius: 5px;
+}
+.collapsible-section > a {
+    display: block;
+    background-color: $accent-color-4;
+    @include button-grad( top, $accent-color-4, darken($accent-color-4, 15%) );
+    width: 100%;
+    padding: .5em .3em;
+    border-radius: 5px;
+    color: black;
+}
+.collapsible-section a:link {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+.section-1 div {
+	display: block;
+}
+.section-2 div, .section-3 div {
+	display: none;
+}
+.tab-pane {
+    height: 150px;
+    overflow: auto;
+}
+
+.arrow-right {
+	display: inline-block;
+	border-color: transparent black;
+	border-style: solid;
+    border-width: .4em 0 .4em 0.6928em;
+	height: 0px;
+	width: 0px;
+    margin: 0 5px 0 5px;
+}
+.arrow-down {
+	display: inline-block;
+	border-color: black transparent;
+	border-style: solid;
+    border-width: 0.6928em .4em 0 .4em;
+	height: 0px;
+	width: 0px;
+    margin: 0 4px 0 5px;
+}
+
+
 
 
 
