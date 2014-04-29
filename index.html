@@ -5,8 +5,10 @@
 	<title>Kid's Fun Map</title>
 	<link rel="stylesheet" href="css/reset.css">
 	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css">
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBx9YAG2RqGH_TZd5fyD2Cqhc_32_tjkks&sensor=false&libraries=geometry,places"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
 	<script src="js/app.js"></script>
 	<link href='http://fonts.googleapis.com/css?family=Fredericka+the+Great|Leckerli+One' rel='stylesheet' type='text/css'>
 </head>
@@ -22,7 +24,7 @@
 			<div class="column column-20 accent-color-5 rainbow-line no-margin last"></div>
 		</div>
 	</header>
-	<section>
+	<section class="search-map">
 		<div class="container non-hidden-overflow">
 
 			<div class="result-list column column-25">
@@ -33,11 +35,11 @@
 			</div>
 
 			<div class="search-wrapper column column-75 last">
-				<!-- <div class="map-content">
+				<div class="map-content">
 					<div class="map-wrapper">
 						<div id="map"></div>
 					</div>
-				</div> -->
+				</div>
 
 				<form id="search-form" onsubmit="" action="#">
 					<div class="search-ctrl">
@@ -52,15 +54,77 @@
 						</label>
 					</div>
 				</form>
-				<div class="map-content">
+				<!-- <div class="map-content">
 					<div class="map-wrapper">
 						<div id="map"></div>
 					</div>
-				</div>
+				</div> -->
 				<!-- <div id="details"></details> -->
 			</div>
 		</div>
 	</section>
+
+	<section class="details">
+		<div class="back-to-main">
+			<a href="">Back To Search Results</a>
+		</div>
+		<div class="container non-hidden-overflow">
+			<div class="detail-wrapper column column-50">
+				<div class="detail-info">
+					
+					<div class="detail-name">Name</div>
+					<div class="detail-address"></div>
+					<div class="detail-phone"></div>
+					<div class="detail-rating">
+						<span class="stars"></span>
+					</div>
+					<div class="detail-website">
+						<a href="" target="_blank"></a>
+					</div>
+					<div class="detail-get-directions">
+						<a href="">Get Directions</a>
+					</div>
+				</div>
+			</div>
+
+			<div class="detail-mini-map column column-50 last">
+				<div id="mini-map"></div>
+			</div>	
+		</div>
+
+
+
+		<div class="container non-hidden-overflow">
+			<div class="detail-tabbed-section  column column-100">
+				<!-- <h3>Hours:</h3>
+				<div class="detail-hours"></div>
+				<h3>Reviews:</h3>
+				<div class="detail-reviews"></div>
+				<h3>PHotos:</h3>
+				<div class="detail-photos"></div> -->
+		<div id="tabs">
+		  <ul>
+		    <li><a href="#tabs-1">Nunc tincidunt</a></li>
+		    <li><a href="#tabs-2">Proin dolor</a></li>
+		    <li><a href="#tabs-3">Aenean lacinia</a></li>
+		  </ul>
+		  <div id="tabs-1">
+		    <p>Proin elit arcu, rutrum commodo, vehicula tempus, commodo a, risus. Curabitur nec arcu. Donec sollicitudin mi sit amet mauris. Nam elementum quam ullamcorper ante. Etiam aliquet massa et lorem. Mauris dapibus lacus auctor risus. Aenean tempor ullamcorper leo. Vivamus sed magna quis ligula eleifend adipiscing. Duis orci. Aliquam sodales tortor vitae ipsum. Aliquam nulla. Duis aliquam molestie erat. Ut et mauris vel pede varius sollicitudin. Sed ut dolor nec orci tincidunt interdum. Phasellus ipsum. Nunc tristique tempus lectus.</p>
+		  </div>
+		  <div id="tabs-2">
+		    <p>Morbi tincidunt, dui sit amet facilisis feugiat, odio metus gravida ante, ut pharetra massa metus id nunc. Duis scelerisque molestie turpis. Sed fringilla, massa eget luctus malesuada, metus eros molestie lectus, ut tempus eros massa ut dolor. Aenean aliquet fringilla sem. Suspendisse sed ligula in ligula suscipit aliquam. Praesent in eros vestibulum mi adipiscing adipiscing. Morbi facilisis. Curabitur ornare consequat nunc. Aenean vel metus. Ut posuere viverra nulla. Aliquam erat volutpat. Pellentesque convallis. Maecenas feugiat, tellus pellentesque pretium posuere, felis lorem euismod felis, eu ornare leo nisi vel felis. Mauris consectetur tortor et purus.</p>
+		  </div>
+		  <div id="tabs-3">
+		    <p>Mauris eleifend est et turpis. Duis id erat. Suspendisse potenti. Aliquam vulputate, pede vel vehicula accumsan, mi neque rutrum erat, eu congue orci lorem eget lorem. Vestibulum non ante. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Fusce sodales. Quisque eu urna vel enim commodo pellentesque. Praesent eu risus hendrerit ligula tempus pretium. Curabitur lorem enim, pretium nec, feugiat nec, luctus a, lacus.</p>
+		    <p>Duis cursus. Maecenas ligula eros, blandit nec, pharetra at, semper at, magna. Nullam ac lacus. Nulla facilisi. Praesent viverra justo vitae neque. Praesent blandit adipiscing velit. Suspendisse potenti. Donec mattis, pede vel pharetra blandit, magna ligula faucibus eros, id euismod lacus dolor eget odio. Nam scelerisque. Donec non libero sed nulla mattis commodo. Ut sagittis. Donec nisi lectus, feugiat porttitor, tempor ac, tempor vitae, pede. Aenean vehicula velit eu tellus interdum rutrum. Maecenas commodo. Pellentesque nec elit. Fusce in lacus. Vivamus a libero vitae lectus hendrerit hendrerit.</p>
+		  </div>
+		</div>
+
+			</div>
+		</div>
+		
+	</section>
+
 
 	<div class="hidden">
 		<label class="chkbox-example column column-33">
@@ -72,6 +136,16 @@
 			<div class="result-cat"></div>
 			<div class="result-dist"></div>
 		</li></ol>
+		<div class="photo">
+			<img src="" width="200" />	
+		</div>
+		<div class="photo-attribution"></div>
+		<div class="review">
+			<div class="review-author"><a href=""></a></div>
+			<div class="review-rating"></div>
+			<div class="review-date"></div>
+			<div class="review-text"></div>
+		</div>
 	</div>
 	
 </body>

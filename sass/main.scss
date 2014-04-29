@@ -6,13 +6,27 @@ $accent-color-3: #60B5D1;	// blue
 $accent-color-4: #91D63C;	// green
 $accent-color-5: #FC7E00;	// orange
 
+@mixin button-grad ($side, $light, $dark) {
+    background: -webkit-linear-gradient($side, $light, $dark);
+    background: -moz-linear-gradient($side, $light, $dark);
+    background: -o-linear-gradient($side, $light, $dark);
+    background: -ms-linear-gradient($side, $light, $dark);
+    background: linear-gradient($side, $light, $dark);
+}
+
+@mixin border-radius-mixin ($radius) {
+    -webkit-border-radius: $radius;
+    -khtml-border-radius: $radius;
+    -moz-border-radius: $radius;
+    border-radius: $radius;
+}
 
 /* apply a natural box layout model to all elements */
 *, *:before, *:after {
     -moz-box-sizing: border-box; 
     -webkit-box-sizing: border-box; 
     box-sizing: border-box;
- }
+}
 
 h1, h2, h3, h4, h5, h6, b, strong {
 	font-weight: bold;
@@ -37,7 +51,7 @@ html, body {
 
 }
 
-section {
+section.search-map {
 	//height: 75%;
 	height: 100%;
 	width: 100%;
@@ -66,33 +80,24 @@ header {
 	padding: 0;
 	margin: 0;
 }
-.accent-color-1 {
-	background-color: $accent-color-1;
-}
-.accent-color-2 {
-	background-color: $accent-color-2;
-}
-.accent-color-3 {
-	background-color: $accent-color-3;
-}
-.accent-color-4 {
-	background-color: $accent-color-4;
-}
-.accent-color-5 {
-	background-color: $accent-color-5;
-}
+.accent-color-1 { background-color: $accent-color-1; }
+.accent-color-2 { background-color: $accent-color-2; }
+.accent-color-3 { background-color: $accent-color-3; }
+.accent-color-4 { background-color: $accent-color-4; }
+.accent-color-5 { background-color: $accent-color-5; }
+
 
 .script {
 	font-family: 'Leckerli One', 'cursive';
 	font-weight: normal;
     font-size: 1.3em;
 }
-
 .block {
 	font-family: 'Fredericka the Great', 'cursive';
 	font-weight: normal;
     font-size: 2em;
 }
+
 
 
 .result-list {
@@ -133,10 +138,6 @@ ul li { list-style-type: disc; }
 }
 
 
-.info-win {
-	min-width: 100px;
-	min-height: 50px;
-}
 
 .search-wrapper {
 	height:100%;
@@ -144,33 +145,11 @@ ul li { list-style-type: disc; }
 		margin-bottom: 2%;
 	}
 }
-
 #search {
 	width: 80%;
 }
-
 .search-ctrl {
 	margin-bottom: 1%;
-}
-
-.map-content {
-	height: 75%;
-	min-height: 75%;
-    position: relative;
-}
-.map-wrapper {
-	right:0;
-    bottom:0;
-    top:0;
-    left:0;
-	overflow:hidden;
-    padding-bottom:10%;
-    position:absolute;
-}
-#map {
-	height: 100%;
-	width: 100%;
-	border: 1px solid #555;
 }
 .category-boxes {
 	display: block;
@@ -183,9 +162,6 @@ ul li { list-style-type: disc; }
 		text-decoration: none;
 	}
 }
-
-
-
 .arrow-right {
 	display: none;
 	border-color: transparent black;
@@ -194,7 +170,6 @@ ul li { list-style-type: disc; }
 	height: 0px;
 	width: 0px;
 }
-
 .arrow-down {
 	display: inline-block;
 	border-color: black transparent;
@@ -202,6 +177,91 @@ ul li { list-style-type: disc; }
 	border-width: 10px 10px 0px 10px;
 	height: 0px;
 	width: 0px;
+}
+
+
+
+.info-win {
+	min-width: 100px;
+	min-height: 50px;
+}
+.map-content {
+	// height: 75%;
+	// min-height: 75%;
+	height: 55%;
+	min-height: 55%;
+    position: relative;
+}
+.map-wrapper {
+	right:0;
+    bottom:0;
+    top:0;
+    left:0;
+	overflow:hidden;
+    //padding-bottom:10%;
+    padding-bottom:1%;
+    position:absolute;
+}
+#map {
+	height: 100%;
+	width: 100%;
+	border: 1px solid #555;
+}
+
+
+
+
+// Styles for the details page
+.detail-info {
+	margin: 0 auto;
+}
+
+.detail-name {
+	@extend h2; 
+}
+.detail-address, .detail-phone {
+	line-height: 1.5em;
+
+}
+.detail-website {
+	text-decoration: none;
+	line-height: 1.5em;
+	// font-weight: bold;
+}
+.detail-get-directions, .back-to-main {
+	margin: 1em 0;
+	& a { 
+		background-color: $accent-color-5;
+		@include button-grad( top, $accent-color-5, darken($accent-color-5, 15%) );
+		@include border-radius-mixin (2em);
+		text-decoration: none;
+		padding: .3em .5em;
+		color: black;
+		font-weight: bold;
+	}
+}
+.back-to-main {
+	margin: 1.3em 0;
+}
+
+
+#mini-map {
+	margin: 0 auto;
+	height: 250px;
+	width: 250px;
+}
+
+
+
+span.stars, span.stars span {
+    display: block;
+    background: url(../images/stars.png) 0 -16px repeat-x;
+    width: 80px;
+    height: 16px;
+}
+
+span.stars span {
+    background-position: 0 0;
 }
 
 

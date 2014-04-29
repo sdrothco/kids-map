@@ -20,12 +20,12 @@ $(document).ready(function(){
 	var box = null;
 	var myMap = new Map();
 
-	google.maps.event.addDomListener(window, 'load', myMap);
+	$( "#tabs" ).tabs();
 
+	google.maps.event.addDomListener(window, 'load', myMap);
 
 	// Add the place category checkboxes to the form.
 	for ( var key in place_categories ) {
-		// console.log(key);
 		box = $('.hidden .chkbox-example').clone();
 		box.find('.box-label').text( place_categories[key].name );
 		box.find('input').attr('value', key )
@@ -82,13 +82,38 @@ $(document).ready(function(){
 
 		var searchKeys = processCategories(search_cats);
 		console.log(searchKeys);
-		
 
 		myMap.doMapSearch( search_loc, searchKeys );
 	});
-
-	$('#all-chkbox').click();
 	
+	$('#map').on('click', '#get-details-link', function(e) {
+		e.preventDefault();
+
+		$('.details').show();
+		$('.search-map').hide();
+
+		var ref = $(this).data('ref');
+		var placeObj = myMap.searchResultPlaces[ref];
+		placeObj.showDetails();
+
+	});
+
+	$('.back-to-main').click( function (e) {
+		e.preventDefault();
+		$('.details').hide();
+		$('.search-map').show();
+		// force the map to refresh because otherwise it is all hokey.
+		google.maps.event.trigger(myMap,'resize');
+
+		// empty the elements where I append cloned child elements.
+		$('.detail-reviews').empty();
+		$('.detail-photos').empty();
+	});
+
+	// Start the page off with all the categories checked
+	$('#all-chkbox').click();
+
+
 });
 
 
@@ -113,6 +138,20 @@ function processCategories( searchCategories ) {
 	return { types: typeCategories, keywords: keywordCategories };
 }
 
+// Make the ratings show up as stars based on the rating number returned in the place details.
+$.fn.stars = function() {
+	return $(this).each(function() {
+		// Get the value
+		var val = parseFloat($(this).html());
+		// Make sure that the value is in 0 - 5 range, multiply to get width
+		val = Math.round(val * 4) / 4; /* To round to nearest quarter */
+		var size = Math.max(0, (Math.min(5, val))) * 16;
+		// Create stars holder
+		var $span = $('<span />').width(size);
+		// Replace the numerical value with stars
+		$(this).html($span);
+	});
+};
 
 
 function Map() {
@@ -174,9 +213,9 @@ function Map() {
 				self.map.fitBounds(results[0].geometry.viewport);
 
 				request.location = self.centralLocation;
-				self.searchLocMarker = new google.maps.Marker({ map: self.map,
-					icon: { path: google.maps.SymbolPath.CIRCLE, scale: 10 },
-					position: self.centralLocation });
+				// self.searchLocMarker = new google.maps.Marker({ map: self.map,
+				// 	icon: { path: google.maps.SymbolPath.CIRCLE, scale: 10 },
+				// 	position: self.centralLocation });
 
 				console.log("doing custom search, request = ");
 				console.log(request);
@@ -196,8 +235,8 @@ function Map() {
 				//console.log(results[i]);
 				createMarker(results[i]);
 
-				var place = new Place( results[i] );
-				self.searchResultPlaces.push( place );
+				var place = new Place( results[i], self.mapService );
+				self.searchResultPlaces[results[i].reference] = place;
 				place.showHeader( self.centralLocation, i );
 
 			}
@@ -207,18 +246,8 @@ function Map() {
 	}
 
 	function createMarker(place) {
-		//console.log("in createMarker");
-
-		// var image = {
-		// 	url: place.icon,
-		// 	size: new google.maps.Size(71, 71),
-		// 	origin: new google.maps.Point(0, 0),
-		// 	anchor: new google.maps.Point(17, 34),
-		// 	scaledSize: new google.maps.Size(25, 25)
-		// };
 		var marker = new google.maps.Marker({
 			map: self.map,
-			//icon: image,
 			position: place.geometry.location,
 			title: place.name
 		});
@@ -229,10 +258,14 @@ function Map() {
 		google.maps.event.addListener(marker, 'click', function() {
 
 			// TODO: fix link - go to details page
-			self.infowindow.setContent("<div class='info-win'><div><strong>" + place.name + "</strong></div><div>" + place.vicinity +
-				"</div><div><a href=''>Get Details</a></div></div>");
+			self.infowindow.setContent("<div class='info-win'><div><strong>" + 
+				place.name + "</strong></div><div>" + place.vicinity +
+				"</div><div><a id='get-details-link' data-ref='" +
+				place.reference + "' href=''>Get Details</a></div></div>");
 			self.infowindow.open(self.map, this);
+			
 		});
+		
 
 		self.map.fitBounds(self.bounds);
 	}
@@ -256,10 +289,16 @@ function Map() {
 }  // end Map
 
 
-function Place( placeResult ) {
+function Place( placeResult, placeService ) {
 	console.log("In Place()");
+	var self = this;
 	this.simple_place = placeResult; // a stripped down version of PlaceResult returned by the search.
-
+	this.detailed_place = null;
+	this.miniMapMarkers = [];
+	this.infowindow = null;
+	this.miniMap = null;
+	this.myService = placeService;
+	
 
 	this.showHeader = function ( searchAddr, markerIdx ) {
 		$('.result-list').css('visibility', 'visible');
@@ -275,6 +314,155 @@ function Place( placeResult ) {
 			.parent().appendTo('.result-list ol');
 
 
+	};
+
+	this.showDetails = function () {
+		console.log("in showDetails");
+		var request = { reference: this.simple_place.reference };
+		this.myService.getDetails(request, function(place, status) {
+			console.log(status);
+			if (status == google.maps.places.PlacesServiceStatus.OK) {
+
+				self.detailed_place = place;
+				console.log("details = ");
+				console.log(self.detailed_place);
+
+				self.showContactInfo();
+				self.showMiniMap();
+
+				//self.showHours();
+				self.showReviews();
+				self.showPhotos();
+			}
+		});
+	};
+
+	this.showContactInfo = function () {
+		console.log("in showContactInfo");
+		console.log(this);
+
+		var detailInfo = $('.detail-info');
+		console.log(detailInfo);
+
+		detailInfo.detach().find('.detail-name').text( this.detailed_place.name )
+			//.parent().find('.detail-address').text( this.detailed_place.formatted_address )
+			.parent().find('.detail-address').html( this.detailed_place.adr_address )
+			.parent().find('.detail-phone').text( this.detailed_place.formatted_phone_number );
+		
+		if ( this.detailed_place.rating ) {
+			detailInfo.find('.detail-rating').removeClass('hidden')
+				.find('span').text( this.detailed_place.rating );
+		} else {
+			detailInfo.find('.detail-rating').addClass('hidden');
+		}
+		if ( this.detailed_place.website ) {
+			detailInfo.find('.detail-website a').attr('href', this.detailed_place.website )
+			.text( this.detailed_place.website );
+		}
+			
+		detailInfo.appendTo('.detail-wrapper');
+		// this must be called after we re-attach the details to the DOM
+		if ( this.detailed_place.rating ) $('.stars').stars();
+	};
+
+	this.showMiniMap = function () {
+		console.log("in showMiniMap");
+		this.infowindow = new google.maps.InfoWindow();
+		var mapOptions = {
+			zoom: 15,
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			center: this.simple_place.geometry.location
+		};
+		this.miniMap = new google.maps.Map(document.getElementById('mini-map'), mapOptions);
+		var marker = new google.maps.Marker({
+			map: this.miniMap,
+			position: this.simple_place.geometry.location
+		});
+		this.miniMapMarkers.push(marker);
+		google.maps.event.addListener(marker, 'click', function() {
+			self.infowindow.setContent(self.simple_place.name+"<br>"+self.simple_place.vicinity+"<br>"+self.simple_place.types.join(","));
+			self.infowindow.open(self.miniMap, this);
+		});
+
+		google.maps.event.addDomListener(window, 'load', this.miniMap);
+
+
+	};
+	
+	this.showHours = function () {
+		console.log("in showHours");
+
+		var hours = "";
+		var time = "";
+		if ( hoursPlace.opening_hours ) {
+
+			console.log( "found hours" );
+
+			for ( var i=0; i<hoursPlace.opening_hours.periods.length; i++) {
+				
+				console.log( dayOfWeekAsInteger(i) );
+				hours += "<div class='hours'>" + dayOfWeekAsInteger(i) + " ";
+
+				time = hoursPlace.opening_hours.periods[i].open.time;
+				hours += [(time/100).toFixed(0),time.substr(-2)].join(':');
+				hours += " - ";
+				time = hoursPlace.opening_hours.periods[i].close.time;
+				hours += [(time/100).toFixed(0),time.substr(-2)].join(':');
+				hours += "</div>";
+			}
+		}
+		console.log("hours: " + hours);
+
+		function dayOfWeekAsInteger(day) {
+				return ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][day];
+		}
+	};
+
+	this.showPhotos = function () {
+		console.log("In showPhotos");
+		var photoArr = this.detailed_place.photos;
+		if ( !photoArr ) {
+			console.log("No photos");
+			return;
+		}
+
+		for (var i =0; photoArr && i<photoArr.length; i++) {
+
+			var newPhoto = $('.hidden .photo').clone();
+			console.log(photoArr[i]);
+			newPhoto.find('img').attr('src', photoArr[i].getUrl({maxHeight: 200, maxWidth: 200}));
+			
+			var attributionsArr =  photoArr[i].html_attributions;
+
+			for (var j=0; attributionsArr && j<attributionsArr.length; j++ ) {
+				var newAttribution = $('.hidden .photo-attribution').clone();
+				newAttribution.html( attributionsArr[j] ).appendTo(newPhoto);
+			}
+			newPhoto.appendTo('.detail-photos');
+		}
+	};
+
+	this.showReviews = function () {
+		console.log("In showReviews");
+		var reviewsArr = this.detailed_place.reviews;
+		if ( !reviewsArr ) {
+			console.log("No reviews");
+			return;
+		}
+
+		for (var i =0; reviewsArr && i<reviewsArr.length; i++) {
+
+			var newReview = $('.hidden .review').clone();
+			console.log(reviewsArr[i]);
+
+			newReview.find('.review-author a').attr('href', reviewsArr[i].author_url)
+				.text(reviewsArr[i].author_name)
+				.closest('.review').find('.review-rating').text(reviewsArr[i].rating + " out of 5 stars")
+				.parent().find('.review-date').text(new Date( reviewsArr[i].time ).toDateString())
+				.parent().find('.review-text').text(reviewsArr[i].text);
+
+			newReview.appendTo('.detail-reviews');
+		}
 	};
 
 
