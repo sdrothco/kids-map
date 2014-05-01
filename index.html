@@ -29,68 +29,79 @@
 	</header>
 
 	<section class="search-map">
-	
-		<div class="container non-hidden-overflow">
-
-			<div class="result-list column column-25">
-
-				<h3>Results Found:</h3>
-				<ol>
-				
-				</ol>
-			</div>
-
-			<div class="search-wrapper column column-75 last">
-				<div class="map-content">
-					<div class="map-wrapper">
-						<div id="map"></div>
-					</div>
-				</div>
-
+		<div class="container-map non-hidden-overflow">
+			<div class="search-wrapper column column-25">
 				<form id="search-form" onsubmit="" action="#">
 					<div class="search-ctrl">
-						<label>Near: <input id="search" type="text" value="80021" /></label>
+						<label>Search Near:<br/><input id="search" type="text" value="80021" /></label>
 						<input type="submit" value="Go!" />
 					</div>
 					<div class="category-label collapsible-section" >
 						<a href="#">Categories <span class="arrow-down"></span></a></div>
 					<div class="category-boxes container">
-						<label class="column column-33">
+						<label class="column column-100">
 							<input id="all-chkbox" type="checkbox" name="checkbox" value="all">
 							<span class="box-label">All</span>
 						</label>
 					</div>
 				</form>
-				<!-- <div class="map-content">
+			</div>
+			
+			<div class="content-wrapper column column-75 last">
+				<!-- <div class="map-content"> -->
 					<div class="map-wrapper">
 						<div id="map"></div>
 					</div>
-				</div> -->
-				<!-- <div id="details"></details> -->
+				<!-- </div> -->
+			</div>
+		</div>
+
+		<div class="results-wrapper container non-hidden-overflow">
+			<h3>Results Found:</h3>
+			<div class="result-list left column column-50 ">
+				<ol>
+				</ol>
+			</div>
+			<div class="result-list right column column-50">
+				<ol start="11">
+				</ol>
 			</div>
 		</div>
 	</section>
 
 	<section class="details">
-		<div class="back-to-main">
-			<a href="">Back To Search Results</a>
-		</div>
-		<div class="container non-hidden-overflow">
+		
+		<div class="container non-hidden-overflow detail-page-top">
 			<div class="detail-wrapper column column-50">
+				
 				<div class="detail-info">
-					
 					<div class="detail-name">Name</div>
 					<div class="detail-address"></div>
 					<div class="detail-phone"></div>
-					<div class="detail-rating">
+					<div class="detail-rating hide-for-directions">
 						<span class="stars"></span>
 					</div>
 					<div class="detail-website">
 						<a href="" target="_blank"></a>
 					</div>
-					<div class="detail-get-directions">
+					<div class="detail-get-directions hide-for-directions">
 						<a href="">Get Directions</a>
 					</div>
+					<div class="back-to-main">
+						<a href="">Back To Search Results</a>
+					</div>
+				</div>
+
+				<div class="directions-form-wrapper hidden">
+					<form id="directions-form" onsubmit="" action="#">
+						<label>Start Location:<br/><input id="directions-start" type="text" value="9707 kipling st 80021" /></label>
+						<input type="submit" value="Go!" />	
+					</form>
+				</div>
+
+				<div class="directions-text-panel hidden">
+					<!-- <h3>Driving directions to <span class="directions-dest"></span></h3> -->
+					<div id="directions-text" style="height 100%"></div>
 				</div>
 			</div>
 
@@ -99,27 +110,11 @@
 			</div>	
 		</div>
 
-
-
-		<!-- <div class="container non-hidden-overflow">
-			<div class="detail-tabbed-section column column-100">
-			<div id="accordion">
-				<h3>Hours</h3>
-						<div class="detail-hours tab-pane"></div>
-
-				<h3>Reviews</h3>
-						<div class="detail-reviews tab-pane"></div>
-				<h3>Photos</h3>
-						<div class="detail-photos tab-pane"></div>
-			</div>
-			</div>
-		</div> -->
-
-		<div class="container non-hidden-overflow">
+		<div class="container non-hidden-overflow detail-page-bottom hide-for-directions">
 			<div class="detail-tabbed-section column column-100">
 				<div class="collapsible-section section-1">
 		            <a href=""><span class="arrow-down"></span>Hours</a>
-					<div class="detail-hours tab-pane">Foo</div>
+					<div class="detail-hours tab-pane"></div>
 				</div>
 				<div class="collapsible-section section-2">
 		            <a href=""><span class="arrow-right"></span>Reviews</a>
@@ -136,7 +131,7 @@
 
 
 	<div class="hidden">
-		<label class="chkbox-example column column-33">
+		<label class="chkbox-example column column-100">
 			<input class="search-cats" type="checkbox" name="search-cats" value="value">
 			<span class="box-label"></span>
 		</label>
@@ -144,6 +139,7 @@
 			<div class="result-name"></div>
 			<div class="result-cat"></div>
 			<div class="result-dist"></div>
+			<div class="result-get-details"><a class="get-details-link" href="">Get Details</a></div>
 		</li></ol>
 		<div class="photo">
 			<img src="" width="200" />	
@@ -154,6 +150,11 @@
 			<div class="review-rating"></div>
 			<div class="review-date"></div>
 			<div class="review-text"></div>
+		</div>
+		<div class="info-win">
+			<div class="info-win-name"></div>
+			<div class="info-win-vicinity"></div>
+			<div class="info-win-link"><a class="get-details-link" data-ref="" href="">Get Details</a></div>
 		</div>
 	</div>
 	

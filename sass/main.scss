@@ -100,8 +100,8 @@ header {
 
 
 
-.result-list {
-	/*background-color: white;*/
+.results-wrapper {
+	margin-top: 1.2%;
 	visibility: hidden;
 }
 
@@ -123,15 +123,10 @@ ul li { list-style-type: disc; }
 	}
 }
 
-.result-name {
-	// font-weight: bold;
-}
-
 .result-cat {
 	display: none;
 	font-size: .6em;
 }
-
 .result-dist {
 	text-align: right;
 	font-size: .8em;
@@ -150,6 +145,9 @@ ul li { list-style-type: disc; }
 }
 .search-ctrl {
 	margin-bottom: 1%;
+	label {
+		font-weight: bold;
+	}
 }
 .category-boxes {
 	display: block;
@@ -157,7 +155,6 @@ ul li { list-style-type: disc; }
 	background-color: white;
     border-radius-left-bottom: 5px;
     border-radius-right-bottom: 5px;
-
 } 
 .category-label a {
 	color: black;
@@ -168,27 +165,40 @@ ul li { list-style-type: disc; }
 
 
 
-
 .info-win {
 	min-width: 100px;
 	min-height: 50px;
+	line-height: 1.5em;
+	a {
+		font-weight: bold;
+	}
 }
-.map-content {
-	// height: 75%;
-	// min-height: 75%;
-	height: 55%;
-	min-height: 55%;
+.content-wrapper {
+	height: 100%;
+	min-height: 100%;
     position: relative;
 }
+// .map-content {
+// 	height: 100%;
+// 	min-height: 100%;
+//     position: relative;
+// }
 .map-wrapper {
 	right:0;
     bottom:0;
     top:0;
     left:0;
 	overflow:hidden;
-    //padding-bottom:10%;
     padding-bottom:1%;
     position:absolute;
+}
+.container-map {
+    width: 100%;
+    height: 55%;
+    min-height: 55%;
+    overflow: hidden;
+    border: 0;
+    clear: both;
 }
 #map {
 	height: 100%;
@@ -198,26 +208,20 @@ ul li { list-style-type: disc; }
 
 
 
-
-// Styles for the details page
+//////////////////////////////////////////
+// Styles for the top of the details page
 .details {
 	display: none;
+	height: 100%;
 }
-.detail-info {
-	margin: 0 auto;
-}
-
 .detail-name {
 	@extend h2; 
 }
-.detail-address, .detail-phone {
+.detail-address, .detail-phone, .detail-website {
 	line-height: 1.5em;
-
 }
 .detail-website {
 	text-decoration: none;
-	line-height: 1.5em;
-	// font-weight: bold;
 }
 .detail-get-directions, .back-to-main {
 	margin: 1em 0;
@@ -231,27 +235,47 @@ ul li { list-style-type: disc; }
 		font-weight: bold;
 	}
 }
-.back-to-main {
-	margin: 1.3em 0;
+.detail-page-top {
+	height: 40%;
 }
-
-
+.detail-mini-map {
+	height: 100%;
+}
 #mini-map {
 	margin: 0 auto;
-	height: 250px;
-	width: 250px;
+	height: 100%;
+	width: 100%;
+	min-width: 100%;
+}
+.directions-form-wrapper {
+	label {
+		width: 100%;
+	}
+}
+
+.directions-text-panel {
+	background-color: white;
+	//@include border-radius-mixin (.5em);
+	padding: 1% 0;
+	margin: 1% 0;
 }
 
 
 
-
+//////////////////////////////////////
+// For the bottom of the detail page
+.detail-page-bottom {
+	height: 40%;
+}
 
 .detail-tabbed-section {
-    margin: 20px 0;
+    margin: 1% 0;
     width: 100%;
+    height: 100%;
 }
 .collapsible-section {
-    margin-top: 8px;
+	max-height: 100%;
+    margin-top: 6px;
     background-color: white;
     border-radius: 5px;
 }
@@ -259,8 +283,8 @@ ul li { list-style-type: disc; }
     display: block;
     background-color: $accent-color-4;
     @include button-grad( top, $accent-color-4, darken($accent-color-4, 15%) );
-    width: 100%;
-    padding: .5em .3em;
+    // width: 100%;
+    padding: .3em .3em;
     border-radius: 5px;
     color: black;
 }
@@ -276,9 +300,22 @@ ul li { list-style-type: disc; }
 	display: none;
 }
 .tab-pane {
-    height: 150px;
+    height: 200px;
+    // height: 25%;
+    // min-height: 25%;
     overflow: auto;
 }
+.photo {
+	float: left;
+	margin: 1.5%;
+}
+
+.review {
+	margin-bottom: 1%;
+}
+
+
+
 
 .arrow-right {
 	display: inline-block;
@@ -299,10 +336,6 @@ ul li { list-style-type: disc; }
     margin: 0 4px 0 5px;
 }
 
-
-
-
-
 span.stars, span.stars span {
     display: block;
     background: url(../images/stars.png) 0 -16px repeat-x;
@@ -319,7 +352,7 @@ span.stars span {
 /* For the GRID SYSTEM */
 .container {
     width: 100%;
-    height: 100%;
+    // height: 100%;
     overflow: hidden;
     border: 0;
     clear: both;

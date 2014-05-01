@@ -50,12 +50,8 @@ $(document).ready(function(){
 		$('.category-boxes').toggle();
 		if( $('.category-boxes').is(':visible') ) {
             $('.category-label span').removeClass('arrow-right').addClass('arrow-down');
-			// $('.arrow-down').css('display', 'inline-block');
-			// $('.arrow-right').css('display', 'none');
 		} else {
             $('.category-label span').removeClass('arrow-down').addClass('arrow-right');
-			// $('.arrow-down').css('display', 'none');
-			// $('.arrow-right').css('display', 'inline-block');
 		}
 		
 	});
@@ -68,8 +64,8 @@ $(document).ready(function(){
 	// The user submitted a search
 	$( "#search-form" ).submit(function( e ) {
 		e.preventDefault();
-		console.log( "Handler for .submit() called." );
-		console.log( $( this ).serialize() );
+		// console.log( "Handler for .submit() called." );
+		// console.log( $( this ).serialize() );
 
 		var search_cats = [];
 		var search_loc = $('input#search').val();
@@ -89,7 +85,9 @@ $(document).ready(function(){
 		myMap.doMapSearch( search_loc, searchKeys );
 	});
 	
-	$('#map').on('click', '#get-details-link', function(e) {
+	// Get the details for a map marker or result header
+	// show the details page.
+	$('#map, .results-wrapper').on('click', '.get-details-link', function(e) {
 		e.preventDefault();
 
 		$('.details').show();
@@ -109,6 +107,7 @@ $(document).ready(function(){
 		google.maps.event.trigger(myMap,'resize');
 
 		// empty the elements where I append cloned child elements.
+		// todo: will need to empty hours too
 		$('.detail-reviews').empty();
 		$('.detail-photos').empty();
 	});
@@ -118,28 +117,43 @@ $(document).ready(function(){
         console.log($(this));
         
         if ( $(this).parent().hasClass('section-1') ) {
-            $('.section-2 div, .section-3 div').hide(500);
+            $('.section-2 div, .section-3 div').hide(450);
             $('.section-2 span, .section-3 span').removeClass('arrow-down').addClass('arrow-right');
-            $(this).parent().find('div').show(500);
+            $(this).parent().find('div').show(450);
             $(this).find('span').removeClass('arrow-right').addClass('arrow-down');
             
         } else if ( $(this).parent().hasClass('section-2') ) {
-            $('.section-1 div, .section-3 div').hide(500);
+            $('.section-1 div, .section-3 div').hide(450);
             $('.section-1 span, .section-3 span').removeClass('arrow-down').addClass('arrow-right');
-            $(this).parent().find('div').show(500);
+            $(this).parent().find('div').show(450);
             $(this).find('span').removeClass('arrow-right').addClass('arrow-down');
             
         } else if ( $(this).parent().hasClass('section-3') ) {
-            $('.section-1 div, .section-2 div').hide(500);
+            $('.section-1 div, .section-2 div').hide(450);
             $('.section-1 span, .section-2 span').removeClass('arrow-down').addClass('arrow-right');
-            $(this).parent().find('div').show(500);
+            $(this).parent().find('div').show(450);
             $(this).find('span').removeClass('arrow-right').addClass('arrow-down');
         }
     });
     
 
+    $('.detail-get-directions a').click( function (e) {
+		console.log("clicked get directions");
+		e.preventDefault();
 
+		var ref = $(this).data('ref');
+		var placeObj = myMap.searchResultPlaces[ref];
+		placeObj.showDirections();
+    });
 
+	$( "#directions-form" ).submit(function( e ) {
+		e.preventDefault();
+		console.log("in submit directions form");
+
+		var ref = $('.detail-get-directions a').data('ref');
+		var placeObj = myMap.searchResultPlaces[ref];
+		placeObj.displayDirections();
+	});
 
 	// Start the page off with all the categories checked
 	$('#all-chkbox').click();
@@ -209,9 +223,9 @@ function Map() {
 	this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
 	this.mapService = new google.maps.places.PlacesService(this.map);
 
-	this.directionsService = new google.maps.DirectionsService();
-	this.directionsDisplay = new google.maps.DirectionsRenderer();
-	this.directionsDisplay.setMap(this.map);
+	// this.directionsService = new google.maps.DirectionsService();
+	// this.directionsDisplay = new google.maps.DirectionsRenderer();
+	// this.directionsDisplay.setMap(this.map);
 
 	// When the user clicks a list item, trigger the event that fires when
 	// a map marker is clicked.  (Open an info window.)
@@ -271,8 +285,6 @@ function Map() {
 				place.showHeader( self.centralLocation, i );
 
 			}
-			//if ( results.length ) showDetails(results[0]);
-			//directionsDest = results[0].geometry.location;
 		}
 	}
 
@@ -288,11 +300,12 @@ function Map() {
 		// set up the listener callback for when the map markers are clicked
 		google.maps.event.addListener(marker, 'click', function() {
 
-			// TODO: fix link - go to details page
-			self.infowindow.setContent("<div class='info-win'><div><strong>" + 
-				place.name + "</strong></div><div>" + place.vicinity +
-				"</div><div><a id='get-details-link' data-ref='" +
-				place.reference + "' href=''>Get Details</a></div></div>");
+			var infoWinExample = $('.hidden .info-win').clone();
+			infoWinExample.find('.info-win-name').text(place.name)
+				.parent().find('.info-win-vicinity').text(place.vicinity)
+				.parent().find('.info-win-link a').data('ref', place.reference);
+			self.infowindow.setContent(infoWinExample.get(0));
+
 			self.infowindow.open(self.map, this);
 			
 		});
@@ -330,9 +343,12 @@ function Place( placeResult, placeService ) {
 	this.miniMap = null;
 	this.myService = placeService;
 	
+	this.directionsService = new google.maps.DirectionsService();
+	this.directionsDisplay = new google.maps.DirectionsRenderer();
+	//this.directionsDisplay.setMap(this.miniMap);
 
 	this.showHeader = function ( searchAddr, markerIdx ) {
-		$('.result-list').css('visibility', 'visible');
+		$('.results-wrapper').css('visibility', 'visible');
 
 		//console.log("In showHeader");
 		var resultItem = $('.hidden .result-item').clone();
@@ -342,9 +358,15 @@ function Place( placeResult, placeService ) {
 		resultItem.find('.result-name').text( this.simple_place.name )
 			.parent().find('.result-cat').text( this.simple_place.types.toString() )
 			.parent().find('.result-dist').text( dist + " miles")
-			.parent().appendTo('.result-list ol');
+			.parent().find('.get-details-link').data('ref', this.simple_place.reference);
+			// .parent().appendTo('.result-list ol');
 
-
+		// TODO: fix this to remove magic number
+		if ( markerIdx <= 9 )	{
+			resultItem.appendTo('.result-list.left ol');
+		} else {
+			resultItem.appendTo('.result-list.right ol');
+		}
 	};
 
 	this.showDetails = function () {
@@ -378,8 +400,9 @@ function Place( placeResult, placeService ) {
 		detailInfo.detach().find('.detail-name').text( this.detailed_place.name )
 			//.parent().find('.detail-address').text( this.detailed_place.formatted_address )
 			.parent().find('.detail-address').html( this.detailed_place.adr_address )
-			.parent().find('.detail-phone').text( this.detailed_place.formatted_phone_number );
-		
+			.parent().find('.detail-phone').text( this.detailed_place.formatted_phone_number )
+			.parent().find('.detail-get-directions a').attr('data-ref', this.simple_place.reference);
+
 		if ( this.detailed_place.rating ) {
 			detailInfo.find('.detail-rating').removeClass('hidden')
 				.find('span').text( this.detailed_place.rating );
@@ -391,7 +414,7 @@ function Place( placeResult, placeService ) {
 			.text( this.detailed_place.website );
 		}
 			
-		detailInfo.appendTo('.detail-wrapper');
+		detailInfo.prependTo('.detail-wrapper');
 		// this must be called after we re-attach the details to the DOM
 		if ( this.detailed_place.rating ) $('.stars').stars();
 	};
@@ -411,9 +434,22 @@ function Place( placeResult, placeService ) {
 		});
 		this.miniMapMarkers.push(marker);
 		google.maps.event.addListener(marker, 'click', function() {
-			self.infowindow.setContent(self.simple_place.name+"<br>"+self.simple_place.vicinity+"<br>"+self.simple_place.types.join(","));
+
+			var infoWinExample = $('.hidden .info-win').clone();
+			infoWinExample.find('.info-win-name').text(self.simple_place.name)
+				.parent().find('.info-win-vicinity').text(self.simple_place.vicinity);
+			infoWinExample.remove('.info-win-link');
+			self.infowindow.setContent(infoWinExample.get(0));
+
+			self.infowindow.setContent("<div class='info-win'><div><strong>" + 
+				self.simple_place.name + "</strong></div><div>" + 
+				self.simple_place.vicinity + "</div></div>");
+		
 			self.infowindow.open(self.miniMap, this);
 		});
+
+		this.directionsDisplay.setMap(this.miniMap);
+
 
 		google.maps.event.addDomListener(window, 'load', this.miniMap);
 
@@ -495,6 +531,57 @@ function Place( placeResult, placeService ) {
 			newReview.appendTo('.detail-reviews');
 		}
 	};
+
+	this.showDirections = function () {
+		console.log("in showDirections");
+
+		// hide the parts of the screen that are not needed for directions display.
+		$('.hide-for-directions').hide();
+
+		// resize the top of the detail page to make the map bigger for directions display.
+		$('.detail-page-top').css('height', '80%');
+		google.maps.event.trigger(this.miniMap, "resize");
+
+		$('.directions-form-wrapper').show();
+		$('.directions-text-panel').show();
+
+	};
+
+	this.displayDirections = function () {
+
+		//var start = prompt( "Enter starting location:" );
+		var start = $('#directions-start').val();
+		var end = this.simple_place.geometry.location;
+		console.log("Calculating from " + start + " to " + end);
+
+		calcRoute(start, end);
+
+	};
+
+
+	function calcRoute(start, end) {
+		// DRIVING, WALKING, BICYCLING, TRANSIT
+		var selectedMode = "DRIVING";
+
+		var request = {
+			origin:start,
+			destination:end,
+			// Note that Javascript allows us to access the constant
+			// using square brackets and a string value as its
+			// "property."
+			travelMode: google.maps.TravelMode[selectedMode]
+		};
+		self.directionsService.route(request, function(response, status) {
+			if (status == google.maps.DirectionsStatus.OK) {
+				console.log("directions ok");
+				self.directionsDisplay.setDirections(response);
+			}
+			else console.log("directions NOT  ok");
+		});
+
+		self.directionsDisplay.setPanel(document.getElementById("directions-text"));
+
+	}
 
 
 
