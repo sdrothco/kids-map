@@ -62,18 +62,33 @@ body {
     margin: 0 auto;
     background-color: $base-color;
     font-size: 16px;
-    font-family: Helvetica;
+    // font-family: Helvetica;
+    font-family: futura-pt, Tahoma, 'Helvetica Neue', Arial, Helvetica, sans-serif;
     line-height:  1.15;
 }
 
 header {
 	background-color: $header-color;
 	margin-bottom: 2%;
+	position: relative;
 	h1 {
 		padding: .5em 0;
 		text-align: center;
 	}
+
 }
+
+.about-button {
+	position: absolute;
+	right: .5%;
+	top: 20%;
+	a {
+		text-decoration: none;
+		font-size: 50px;
+		color: $accent-color-5;
+	}
+}
+
 
 .rainbow-line {
 	height: 1em;
@@ -116,21 +131,34 @@ ul li { list-style-type: disc; }
 	border-bottom: 2px $accent-color-5 solid;
 	&:first-child {
 		border-top: 2px $accent-color-5 solid;
-		margin-top: .3em;
+		margin-top: .25em;
 	}
 	&:hover {
 		background-color: $accent-color-3;
 	}
 }
-
+.result-item {
+	position: relative;
+	width: 100%;
+}
 .result-cat {
 	display: none;
-	font-size: .6em;
 }
 .result-dist {
-	text-align: right;
-	font-size: .8em;
+	//text-align: right;
+	position: absolute;
+	top: 0; 
+	right: 0;
+	margin-top: .5em;
+	font-size: .9em;
 }
+.result-get-details {
+	position: relative;
+	left: 1.3em;
+	top: .2em;
+	font-size: .9em;
+}
+
 
 
 
@@ -217,24 +245,24 @@ ul li { list-style-type: disc; }
 .detail-name {
 	@extend h2; 
 }
-.detail-address, .detail-phone, .detail-website {
+.detail-address, .detail-phone {
 	line-height: 1.5em;
 }
-.detail-website {
-	text-decoration: none;
-}
-.detail-get-directions, .back-to-main {
-	margin: 1em 0;
-	& a { 
-		background-color: $accent-color-4;
-		@include button-grad( top, $accent-color-4, darken($accent-color-4, 15%) );
-		@include border-radius-mixin (2em);
-		text-decoration: none;
-		padding: .3em .5em;
-		color: black;
-		font-weight: bold;
-	}
-}
+// .detail-website {
+// 	text-decoration: none;
+// }
+// .detail-get-directions, .back-to-main {
+// 	margin: 1em 0;
+// 	& a { 
+// 		background-color: $accent-color-4;
+// 		@include button-grad( top, $accent-color-4, darken($accent-color-4, 15%) );
+// 		@include border-radius-mixin (2em);
+// 		text-decoration: none;
+// 		padding: .3em .5em;
+// 		color: black;
+// 		font-weight: bold;
+// 	}
+// }
 .detail-page-top {
 	height: 40%;
 }
@@ -259,7 +287,23 @@ ul li { list-style-type: disc; }
 	padding: 1% 0;
 	margin: 1% 0;
 }
+.show-for-directions {
+	display: none;
+}
 
+
+.button {
+	margin: 1em 0;
+	& a { 
+		background-color: $accent-color-4;
+		@include button-grad( top, $accent-color-4, darken($accent-color-4, 15%) );
+		@include border-radius-mixin (2em);
+		text-decoration: none;
+		padding: .3em .5em;
+		color: black;
+		font-weight: bold;
+	}
+}
 
 
 //////////////////////////////////////
@@ -314,7 +358,23 @@ ul li { list-style-type: disc; }
 	margin-bottom: 1%;
 }
 
-
+.hours {
+	margin: .6% 0;
+}
+.today {
+	font-weight: bold;
+}
+.day {
+	width: 10%;
+	text-align: right;
+	display: inline-block;
+	margin-right: 2%;
+}
+.times {
+	width: 25%;
+	text-align: left;
+	display: inline-block;
+}
 
 
 .arrow-right {

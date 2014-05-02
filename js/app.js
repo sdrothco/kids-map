@@ -56,6 +56,12 @@ $(document).ready(function(){
 		
 	});
 
+
+	$('.about-button').click( function (e) {
+
+	});
+
+
 	// User clicked a search result from the list of headers next to the map.
 	$('.result-list').on('click', 'li', function() {
 		myMap.triggerMapMarker( $(this).data('markeridx') );
@@ -108,8 +114,29 @@ $(document).ready(function(){
 
 		// empty the elements where I append cloned child elements.
 		// todo: will need to empty hours too
+		$('.detail-hours').empty();
 		$('.detail-reviews').empty();
 		$('.detail-photos').empty();
+	});
+
+	$('.back-to-details').click( function (e) {
+		e.preventDefault();
+
+		$('.show-for-directions').hide();
+		$('.hide-for-directions').show();
+
+		$('.detail-page-top').css('height', '40%');
+		google.maps.event.trigger(this.miniMap, "resize");
+
+		//$('.details').hide();
+		//$('.search-map').show();
+		// force the map to refresh because otherwise it is all hokey.
+		//google.maps.event.trigger(myMap,'resize');
+
+		// empty the elements where I append cloned child elements.
+		// todo: will need to empty hours too
+		//$('.detail-reviews').empty();
+		//$('.detail-photos').empty();
 	});
 
     $('.collapsible-section a').click( function(e) {
@@ -118,21 +145,21 @@ $(document).ready(function(){
         
         if ( $(this).parent().hasClass('section-1') ) {
             $('.section-2 div, .section-3 div').hide(450);
-            $('.section-2 span, .section-3 span').removeClass('arrow-down').addClass('arrow-right');
+            $('.section-2 .section-header, .section-3 .section-header').removeClass('arrow-down').addClass('arrow-right');
             $(this).parent().find('div').show(450);
-            $(this).find('span').removeClass('arrow-right').addClass('arrow-down');
+            $(this).find('.section-header').removeClass('arrow-right').addClass('arrow-down');
             
         } else if ( $(this).parent().hasClass('section-2') ) {
             $('.section-1 div, .section-3 div').hide(450);
-            $('.section-1 span, .section-3 span').removeClass('arrow-down').addClass('arrow-right');
+            $('.section-1 .section-header, .section-3 .section-header').removeClass('arrow-down').addClass('arrow-right');
             $(this).parent().find('div').show(450);
-            $(this).find('span').removeClass('arrow-right').addClass('arrow-down');
+            $(this).find('.section-header').removeClass('arrow-right').addClass('arrow-down');
             
         } else if ( $(this).parent().hasClass('section-3') ) {
             $('.section-1 div, .section-2 div').hide(450);
-            $('.section-1 span, .section-2 span').removeClass('arrow-down').addClass('arrow-right');
+            $('.section-1 .section-header, .section-2 .section-header').removeClass('arrow-down').addClass('arrow-right');
             $(this).parent().find('div').show(450);
-            $(this).find('span').removeClass('arrow-right').addClass('arrow-down');
+            $(this).find('.section-header').removeClass('arrow-right').addClass('arrow-down');
         }
     });
     
@@ -223,10 +250,6 @@ function Map() {
 	this.map = new google.maps.Map(document.getElementById('map'), mapOptions);
 	this.mapService = new google.maps.places.PlacesService(this.map);
 
-	// this.directionsService = new google.maps.DirectionsService();
-	// this.directionsDisplay = new google.maps.DirectionsRenderer();
-	// this.directionsDisplay.setMap(this.map);
-
 	// When the user clicks a list item, trigger the event that fires when
 	// a map marker is clicked.  (Open an info window.)
 	this.triggerMapMarker = function( markerIdx ) {
@@ -247,7 +270,7 @@ function Map() {
 		};
 		address = unescape(searchAddress);
 		var geocoder = new google.maps.Geocoder();
-		console.log("2searching for: " + address + ", and category: " + categories);
+		// console.log("searching for: " + address + ", and category: " + categories);
 
 		geocoder.geocode({address: address}, function(results, status) {
 			if (status == google.maps.GeocoderStatus.OK) {
@@ -258,12 +281,9 @@ function Map() {
 				self.map.fitBounds(results[0].geometry.viewport);
 
 				request.location = self.centralLocation;
-				// self.searchLocMarker = new google.maps.Marker({ map: self.map,
-				// 	icon: { path: google.maps.SymbolPath.CIRCLE, scale: 10 },
-				// 	position: self.centralLocation });
 
-				console.log("doing custom search, request = ");
-				console.log(request);
+				// console.log("doing custom search, request = ");
+				// console.log(request);
 				self.mapService.nearbySearch(request, placeSearchCallback);
 
 			} else {
@@ -383,7 +403,7 @@ function Place( placeResult, placeService ) {
 				self.showContactInfo();
 				self.showMiniMap();
 
-				//self.showHours();
+				self.showHours();
 				self.showReviews();
 				self.showPhotos();
 			}
@@ -410,8 +430,8 @@ function Place( placeResult, placeService ) {
 			detailInfo.find('.detail-rating').addClass('hidden');
 		}
 		if ( this.detailed_place.website ) {
-			detailInfo.find('.detail-website a').attr('href', this.detailed_place.website )
-			.text( this.detailed_place.website );
+			detailInfo.find('.detail-website a').attr('href', this.detailed_place.website );
+			// .text( this.detailed_place.website );
 		}
 			
 		detailInfo.prependTo('.detail-wrapper');
@@ -459,30 +479,41 @@ function Place( placeResult, placeService ) {
 	this.showHours = function () {
 		console.log("in showHours");
 
-		var hours = "";
-		var time = "";
-		if ( hoursPlace.opening_hours ) {
-
-			console.log( "found hours" );
-
-			for ( var i=0; i<hoursPlace.opening_hours.periods.length; i++) {
-				
-				console.log( dayOfWeekAsInteger(i) );
-				hours += "<div class='hours'>" + dayOfWeekAsInteger(i) + " ";
-
-				time = hoursPlace.opening_hours.periods[i].open.time;
-				hours += [(time/100).toFixed(0),time.substr(-2)].join(':');
-				hours += " - ";
-				time = hoursPlace.opening_hours.periods[i].close.time;
-				hours += [(time/100).toFixed(0),time.substr(-2)].join(':');
-				hours += "</div>";
-			}
+		var hoursData = this.detailed_place.opening_hours;
+		if ( !hoursData ) {
+			console.log("No hours available.");
+			return;
 		}
-		console.log("hours: " + hours);
+
+		var today = new Date();
+		console.log( "found hours" );
+		console.log(hoursData);
+
+		for ( var i=0; i < hoursData.periods.length; i++) {
+			
+			var openTime = formatTime(hoursData.periods[i].open.time);
+			var closeTime = formatTime(hoursData.periods[i].close.time);
+			var newHours = $('.hidden .hours').clone();
+			newHours.find('.day').text(dayOfWeekAsInteger(i))
+				.next().text(openTime + " - " + closeTime);
+			if ( today.getDay() === i ) newHours.addClass('today');
+
+			$('.detail-hours').append(newHours);
+		}
 
 		function dayOfWeekAsInteger(day) {
 				return ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][day];
 		}
+		function formatTime( time ) {
+			var hour = (time/100).toString().slice(0,2);
+			var period = hour < 12 ? " am" : " pm";
+			if ( hour > 12 ) hour -= 12;
+			if ( hour == 0 ) hour = 12;
+			time = hour + ':' + time.substr(-2) + period;
+			console.log(time);
+			return time;
+		}
+
 	};
 
 	this.showPhotos = function () {
@@ -542,8 +573,7 @@ function Place( placeResult, placeService ) {
 		$('.detail-page-top').css('height', '80%');
 		google.maps.event.trigger(this.miniMap, "resize");
 
-		$('.directions-form-wrapper').show();
-		$('.directions-text-panel').show();
+		$('.show-for-directions').show();
 
 	};
 

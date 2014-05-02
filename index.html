@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<title>Kid's Fun Map</title>
 	<link rel="stylesheet" href="css/reset.css">
+	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/main.css">
 	<!-- <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css"> -->
 	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/themes/start/jquery-ui.css">
@@ -18,7 +19,9 @@
 <body>
 	<header>
 		<h1><span class="script">Let's </span><span class="block">Go Have Fun </span>
-		<span class="script">With Kids!</span></h1>	
+		<span class="script">With Kids!</span></h1>
+		<div class="about-button"><a href="" class="icon-info-circle icon-button"></a></div>
+
 		<div class="container rainbow-line">
 			<div class="column column-20 accent-color-1 rainbow-line no-margin"></div>
 			<div class="column column-20 accent-color-2 rainbow-line no-margin"></div>
@@ -34,7 +37,7 @@
 				<form id="search-form" onsubmit="" action="#">
 					<div class="search-ctrl">
 						<label>Search Near:<br/><input id="search" type="text" value="80021" /></label>
-						<input type="submit" value="Go!" />
+						<input type="submit" value="Go!"/>
 					</div>
 					<div class="category-label collapsible-section" >
 						<a href="#">Categories <span class="arrow-down"></span></a></div>
@@ -71,7 +74,7 @@
 
 	<section class="details">
 		
-		<div class="container non-hidden-overflow detail-page-top">
+		<div class="detail-page-top container non-hidden-overflow">
 			<div class="detail-wrapper column column-50">
 				
 				<div class="detail-info">
@@ -81,25 +84,28 @@
 					<div class="detail-rating hide-for-directions">
 						<span class="stars"></span>
 					</div>
-					<div class="detail-website">
-						<a href="" target="_blank"></a>
+					<div class="detail-website button">
+						<a href="" target="_blank">Visit Website</a>
 					</div>
-					<div class="detail-get-directions hide-for-directions">
+					<div class="detail-get-directions hide-for-directions button">
 						<a href="">Get Directions</a>
 					</div>
-					<div class="back-to-main">
+					<div class="back-to-main button">
 						<a href="">Back To Search Results</a>
+					</div>
+					<div class="back-to-details button show-for-directions">
+						<a href="">Back To Details</a>
 					</div>
 				</div>
 
-				<div class="directions-form-wrapper hidden">
+				<div class="directions-form-wrapper show-for-directions">
 					<form id="directions-form" onsubmit="" action="#">
 						<label>Start Location:<br/><input id="directions-start" type="text" value="9707 kipling st 80021" /></label>
 						<input type="submit" value="Go!" />	
 					</form>
 				</div>
 
-				<div class="directions-text-panel hidden">
+				<div class="directions-text-panel show-for-directions">
 					<!-- <h3>Driving directions to <span class="directions-dest"></span></h3> -->
 					<div id="directions-text" style="height 100%"></div>
 				</div>
@@ -110,18 +116,18 @@
 			</div>	
 		</div>
 
-		<div class="container non-hidden-overflow detail-page-bottom hide-for-directions">
+		<div class="detail-page-bottom hide-for-directions container non-hidden-overflow ">
 			<div class="detail-tabbed-section column column-100">
 				<div class="collapsible-section section-1">
-		            <a href=""><span class="arrow-down"></span>Hours</a>
+		            <a href=""><span class="section-header arrow-down"></span>Hours</a>
 					<div class="detail-hours tab-pane"></div>
 				</div>
 				<div class="collapsible-section section-2">
-		            <a href=""><span class="arrow-right"></span>Reviews</a>
+		            <a href=""><span class="section-header arrow-right"></span>Reviews</a>
 					<div class="detail-reviews tab-pane"></div>
 				</div>
 				<div class="collapsible-section section-3">
-		            <a href=""><span class="arrow-right"></span>Photos</a>
+		            <a href=""><span class="section-header arrow-right"></span>Photos</a>
 					<div class="detail-photos tab-pane"></div>
 				</div>
 
@@ -151,11 +157,15 @@
 			<div class="review-date"></div>
 			<div class="review-text"></div>
 		</div>
+		<div class="hours"><span class="day"></span><span class="times"></span></div>
 		<div class="info-win">
 			<div class="info-win-name"></div>
 			<div class="info-win-vicinity"></div>
 			<div class="info-win-link"><a class="get-details-link" data-ref="" href="">Get Details</a></div>
 		</div>
+		<div class="about-box">
+		</div>
+
 	</div>
 	
 </body>
