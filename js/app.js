@@ -100,8 +100,7 @@ $(document).ready(function(){
 		myMap.doMapSearch( search_loc, searchKeys );
 	});
 	
-	// Get the details for a map marker or result header
-	// show the details page.
+	// Get the details for a map marker or result header show the details page.
 	$('#map, .results-wrapper').on('click', '.get-details-link', function(e) {
 		e.preventDefault();
 
@@ -115,6 +114,7 @@ $(document).ready(function(){
 	});
 
 	$('.back-to-main').click( function (e) {
+		console.log("In back-to-main click");
 		e.preventDefault();
 		$('.details').hide();
 		$('.search-map').show();
@@ -122,10 +122,10 @@ $(document).ready(function(){
 		google.maps.event.trigger(myMap,'resize');
 
 		// empty the elements where I append cloned child elements.
-		// todo: will need to empty hours too
-		$('.detail-hours').empty();
-		$('.detail-reviews').empty();
-		$('.detail-photos').empty();
+		// $('.detail-hours').empty();
+		// $('.detail-reviews').empty();
+		// $('.detail-photos').empty();
+		resetDetails();
 	});
 
 	$('.back-to-details').click( function (e) {
@@ -137,15 +137,6 @@ $(document).ready(function(){
 		$('.detail-page-top').css('height', '40%');
 		google.maps.event.trigger(this.miniMap, "resize");
 
-		//$('.details').hide();
-		//$('.search-map').show();
-		// force the map to refresh because otherwise it is all hokey.
-		//google.maps.event.trigger(myMap,'resize');
-
-		// empty the elements where I append cloned child elements.
-		// todo: will need to empty hours too
-		//$('.detail-reviews').empty();
-		//$('.detail-photos').empty();
 	});
 
     $('.collapsible-section a').click( function(e) {
@@ -198,6 +189,15 @@ $(document).ready(function(){
 	
 
 });
+
+function resetDetails() {
+	// empty the elements where I append cloned child elements.
+	$('.detail-hours').empty().hide().parent().hide();
+	$('.detail-reviews').empty().hide().parent().hide();
+	$('.detail-photos').empty().hide().parent().hide();
+
+
+}
 
 
 function processCategories( searchCategories ) {
@@ -417,6 +417,11 @@ function Place( placeResult, placeService ) {
 				self.showHours();
 				self.showReviews();
 				self.showPhotos();
+
+				$('.section-header').addClass('arrow-right').removeClass('arrow-down');
+				$('.detail-tabbed-section .collapsible-section:visible:first div').show()
+					.parent().find('.section-header').addClass('arrow-down').removeClass('arrow-right');
+
 			}
 		});
 	};
@@ -429,21 +434,38 @@ function Place( placeResult, placeService ) {
 		console.log(detailInfo);
 
 		detailInfo.detach().find('.detail-name').text( this.detailed_place.name )
-			//.parent().find('.detail-address').text( this.detailed_place.formatted_address )
-			.parent().find('.detail-address').html( this.detailed_place.adr_address )
+			.parent().find('.detail-address').text( this.detailed_place.formatted_address )
+			//.parent().find('.detail-address').html( this.detailed_place.adr_address )
 			.parent().find('.detail-phone').text( this.detailed_place.formatted_phone_number )
 			.parent().find('.detail-get-directions a').attr('data-ref', this.simple_place.reference);
 
+		// if ( this.detailed_place.rating ) {
+		// 	detailInfo.find('.detail-rating').removeClass('hidden')
+		// 		.find('span').text( this.detailed_place.rating );
+		// } else {
+		// 	detailInfo.find('.detail-rating').addClass('hidden');
+		// }
+
+		// if ( this.detailed_place.website ) {
+		// 	detailInfo.find('.detail-website a').removeClass('hidden').attr('href', this.detailed_place.website );
+		// } else {
+		// 	console.log("****************************************NO WEBSITE");
+		// 	detailInfo.find('.detail-website a').addClass('hidden');
+		// }
+
 		if ( this.detailed_place.rating ) {
-			detailInfo.find('.detail-rating').removeClass('hidden')
-				.find('span').text( this.detailed_place.rating );
+			detailInfo.find('.detail-rating').show().find('span').text( this.detailed_place.rating );
 		} else {
-			detailInfo.find('.detail-rating').addClass('hidden');
+			detailInfo.find('.detail-rating').hide();
 		}
+
 		if ( this.detailed_place.website ) {
-			detailInfo.find('.detail-website a').attr('href', this.detailed_place.website );
-			// .text( this.detailed_place.website );
+			detailInfo.find('.detail-website a').show().attr('href', this.detailed_place.website );
+		} else {
+			console.log("****************************************NO WEBSITE");
+			detailInfo.find('.detail-website a').hide();
 		}
+
 			
 		detailInfo.prependTo('.detail-wrapper');
 		// this must be called after we re-attach the details to the DOM
@@ -493,12 +515,14 @@ function Place( placeResult, placeService ) {
 		var hoursData = this.detailed_place.opening_hours;
 		if ( !hoursData ) {
 			console.log("No hours available.");
+			$('.detail-tabbed-section .section-1').hide();
 			return;
 		}
 
+		$('.detail-tabbed-section .section-1').show();
 		var today = new Date();
 		console.log( "found hours" );
-		console.log(hoursData);
+		//console.log(hoursData);
 
 		for ( var i=0; i < hoursData.periods.length; i++) {
 			
@@ -521,7 +545,6 @@ function Place( placeResult, placeService ) {
 			if ( hour > 12 ) hour -= 12;
 			if ( hour == 0 ) hour = 12;
 			time = hour + ':' + time.substr(-2) + period;
-			console.log(time);
 			return time;
 		}
 
@@ -532,8 +555,10 @@ function Place( placeResult, placeService ) {
 		var photoArr = this.detailed_place.photos;
 		if ( !photoArr ) {
 			console.log("No photos");
+			$('.detail-tabbed-section .section-3').hide();
 			return;
 		}
+		$('.detail-tabbed-section .section-3').show();
 
 		for (var i =0; photoArr && i<photoArr.length; i++) {
 
@@ -556,9 +581,10 @@ function Place( placeResult, placeService ) {
 		var reviewsArr = this.detailed_place.reviews;
 		if ( !reviewsArr ) {
 			console.log("No reviews");
+			$('.detail-tabbed-section .section-2').hide();
 			return;
 		}
-
+		$('.detail-tabbed-section .section-2').show();
 		for (var i =0; reviewsArr && i<reviewsArr.length; i++) {
 
 			var newReview = $('.hidden .review').clone();
@@ -567,8 +593,9 @@ function Place( placeResult, placeService ) {
 			newReview.find('.review-author a').attr('href', reviewsArr[i].author_url)
 				.text(reviewsArr[i].author_name)
 				.closest('.review').find('.review-rating').text(reviewsArr[i].rating + " out of 5 stars")
-				.parent().find('.review-date').text(new Date( reviewsArr[i].time ).toDateString())
-				.parent().find('.review-text').text(reviewsArr[i].text);
+				// the review date is not supported by google places at this time.
+				//.parent().find('.review-date').text(new Date( reviewsArr[i].time ).toDateString())
+				.parent().find('.review-text').html(reviewsArr[i].text);
 
 			newReview.appendTo('.detail-reviews');
 		}
@@ -590,13 +617,11 @@ function Place( placeResult, placeService ) {
 
 	this.displayDirections = function () {
 
-		//var start = prompt( "Enter starting location:" );
 		var start = $('#directions-start').val();
 		var end = this.simple_place.geometry.location;
 		console.log("Calculating from " + start + " to " + end);
 
 		calcRoute(start, end);
-
 	};
 
 
@@ -621,9 +646,6 @@ function Place( placeResult, placeService ) {
 		});
 
 		self.directionsDisplay.setPanel(document.getElementById("directions-text"));
-
 	}
-
-
 
 }  // end Place

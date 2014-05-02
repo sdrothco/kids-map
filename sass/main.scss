@@ -172,14 +172,26 @@ ul li { list-style-type: disc; }
 	form {
 		margin-bottom: 2%;
 	}
-}
-#search {
-	width: 80%;
-}
-.search-ctrl {
-	margin-bottom: 1%;
-	label {
+	form > label {
+		width: 100%;
 		font-weight: bold;
+	}
+}
+
+.search-ctrl {
+	display: table;
+    width: 100%;
+	margin-bottom: 1%;
+	span {
+		display: table-cell;
+		width: 100%;
+		padding: 0px 5px 0 0;
+	}
+	#search {
+		width: 100%;
+	}
+	#search-submit {
+		display: table-cell;
 	}
 }
 .category-boxes {
@@ -253,21 +265,7 @@ ul li { list-style-type: disc; }
 .detail-address, .detail-phone {
 	line-height: 1.5em;
 }
-// .detail-website {
-// 	text-decoration: none;
-// }
-// .detail-get-directions, .back-to-main {
-// 	margin: 1em 0;
-// 	& a { 
-// 		background-color: $accent-color-4;
-// 		@include button-grad( top, $accent-color-4, darken($accent-color-4, 15%) );
-// 		@include border-radius-mixin (2em);
-// 		text-decoration: none;
-// 		padding: .3em .5em;
-// 		color: black;
-// 		font-weight: bold;
-// 	}
-// }
+
 .detail-page-top {
 	height: 40%;
 }
@@ -280,18 +278,39 @@ ul li { list-style-type: disc; }
 	width: 100%;
 	min-width: 100%;
 }
+
 .directions-form-wrapper {
+	width: 100%;
+}
+#directions-form {
+	width: 100%;
 	label {
 		width: 100%;
+		font-weight: bold;
 	}
+}
+
+.directions-input-ctrls {
+	display:table;
+
+	span {
+		display: table-cell;
+		width: 100%;
+		padding: 0 10px 0 0;
+	}
+	#directions-start {
+		width: 100%;
+	}
+	#directions-submit {
+		display: table-cell;
+	}
+
 }
 
 .directions-text-panel {
 	background-color: white;
-	//@include border-radius-mixin (.5em);
-	padding: 1% 0;
-	margin: 1% 0;
 }
+
 .show-for-directions {
 	display: none;
 }
@@ -337,19 +356,17 @@ ul li { list-style-type: disc; }
     border-radius: 5px;
     color: black;
 }
-.collapsible-section a:link {
+.collapsible-section > a:link {
     text-decoration: none;
     font-weight: bold;
     color: black;
 }
-.section-1 div {
-	display: block;
-}
-.section-2 div, .section-3 div {
+.section-1 div, .section-2 div, .section-3 div {
 	display: none;
 }
 .tab-pane {
     height: 200px;
+    padding: 1%;
     // height: 25%;
     // min-height: 25%;
     overflow: auto;
@@ -413,7 +430,7 @@ span.stars span {
 }
 
 
-
+/////////////////////////////////////////
 /* For the GRID SYSTEM */
 .container {
     width: 100%;
@@ -484,7 +501,7 @@ span.stars span {
 	display: none;
 }
 
-////////////////////////////////////
+///////////////////////////////////////////////
 // For the modal dialog box
 /* Default class for an overlay */
 .ow-overlay {

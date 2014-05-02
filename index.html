@@ -38,9 +38,10 @@
 		<div class="container-map non-hidden-overflow">
 			<div class="search-wrapper column column-25">
 				<form id="search-form" onsubmit="" action="#">
+					<label>Search Near:</label>
 					<div class="search-ctrl">
-						<label>Search Near:<br/><input id="search" type="text" value="80021" /></label>
-						<input type="submit" value="Go!"/>
+						<span><input id="search" type="text" value="80021" /></span>
+						<input id="search-submit" type="submit" value="Go!"/>
 					</div>
 					<div class="category-label collapsible-section" >
 						<a href="#">Categories <span class="arrow-down"></span></a></div>
@@ -103,8 +104,9 @@
 
 				<div class="directions-form-wrapper show-for-directions">
 					<form id="directions-form" onsubmit="" action="#">
-						<label>Start Location:<br/><input id="directions-start" type="text" value="9707 kipling st 80021" /></label>
-						<input type="submit" value="Go!" />	
+						<label>Start Location:</label>
+						<div class="directions-input-ctrls"><span><input id="directions-start" type="text" value="9707 kipling st 80021" /></span>
+						<input id="directions-submit" type="submit" value="Go!" /></div>
 					</form>
 				</div>
 
@@ -173,9 +175,9 @@
 		</div>
 		<div class="photo-attribution"></div>
 		<div class="review">
-			<div class="review-author"><a href=""></a></div>
+			<div class="review-author"><a href="" target="_blank"></a></div>
 			<div class="review-rating"></div>
-			<div class="review-date"></div>
+			<!-- <div class="review-date"></div> --><!-- not supported by google places api right now -->
 			<div class="review-text"></div>
 		</div>
 		<div class="hours"><span class="day"></span><span class="times"></span></div>
