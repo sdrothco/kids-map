@@ -12,8 +12,11 @@
 
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBx9YAG2RqGH_TZd5fyD2Cqhc_32_tjkks&sensor=false&libraries=geometry,places"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+ <!-- <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script> -->
+	<script type="text/javascript" src="js/jquery.omniwindow.js"></script>
 	<script src="js/app.js"></script>
+
+
 	<link href='http://fonts.googleapis.com/css?family=Fredericka+the+Great|Leckerli+One' rel='stylesheet' type='text/css'>
 </head>
 <body>
@@ -134,6 +137,24 @@
 			</div>
 		</div>
 	</section>
+
+
+	<!-- Container for an overlay: --> 
+	<div class="ow-overlay ow-closed"></div>
+	<!-- Container for a modal window: --> 
+	<div class="modal ow-closed">
+		<div class="modal-content">
+		<h2><div style="text-align:left"><span class="script">Need to find something </span></div>
+			<div style="text-align:center"><span class="block">Fun To Do</span></div>
+			<div style="text-align:right"><span class="script"> with your kids?</span></div></h2>
+
+		<p>You've come to the right place!  Enter your location into the map's search box, and select the categories of activities you are interested in.  Click "Go!" and the map will show you the locations of those activities in your area.</p>
+
+		<p>You can get more details for a location, such as hours, reviews, and directions by selecting "Get Details".</p>
+
+		<p><a class='close-button button' href='#'>Let's Go Have Fun!</a></p>
+		</div>
+	</div>
 
 
 	<div class="hidden">

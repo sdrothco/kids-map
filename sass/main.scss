@@ -86,6 +86,11 @@ header {
 		text-decoration: none;
 		font-size: 50px;
 		color: $accent-color-5;
+
+		&:hover {
+			//color: darken($accent-color-5, 7%);
+			color: darken($accent-color-4, 10%);
+		}
 	}
 }
 
@@ -477,4 +482,68 @@ span.stars span {
 
 .hidden {
 	display: none;
+}
+
+////////////////////////////////////
+// For the modal dialog box
+/* Default class for an overlay */
+.ow-overlay {
+	position: fixed;
+	z-index: 10;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+
+	background: #424242;
+	opacity: 0.8;
+}
+
+/* Default class for both hidden overlay and modal window */
+.ow-closed {
+	display: none;
+}
+
+.modal-content {
+	position: relative;
+	height: 100%;
+	width: 100%;
+}
+
+/* Default class for modal window */
+.modal {
+
+	position: fixed;
+	z-index: 20;
+	height: 50%;
+	width: 50%;
+	overflow: auto;
+	left: 50%;
+	top: 50px;
+	padding: 1%;
+	background-color: #fff;
+
+	h2 { 
+		padding: .3em 0;
+		background-color: lighten($accent-color-3, 20%);
+	}
+	p {
+		padding: .3em 0;
+		font-size: 1em;
+	}
+	.button {
+		display:block;
+		text-decoration: none;
+		text-align: center;
+		font-size: 1.5em;
+		margin: 0 auto;
+		margin-top: 10px;
+		
+		background-color: darken($accent-color-4, 10%);
+		color: white;
+		&:hover {
+			background-color: darken($accent-color-4, 20%);
+		}
+	}
+
 }

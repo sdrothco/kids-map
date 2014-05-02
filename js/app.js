@@ -19,9 +19,10 @@ var place_categories = {
 $(document).ready(function(){
 	var box = null;
 	var myMap = new Map();
+	var $modal = null;
 
 	// $( "#tabs" ).tabs();
-	$( "#accordion" ).accordion();
+	//$( "#accordion" ).accordion();
 
 	google.maps.event.addDomListener(window, 'load', myMap);
 
@@ -58,7 +59,15 @@ $(document).ready(function(){
 
 
 	$('.about-button').click( function (e) {
+		e.preventDefault();
+		console.log("clicked about button");
+		$modal = $('div.modal').omniWindow();
+		$modal.trigger('show');
 
+	});
+	$('.close-button').click(function(e){
+		e.preventDefault();
+		$modal.trigger('hide');
 	});
 
 
@@ -185,6 +194,8 @@ $(document).ready(function(){
 	// Start the page off with all the categories checked
 	$('#all-chkbox').click();
 
+
+	
 
 });
 
