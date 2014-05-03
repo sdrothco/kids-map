@@ -121,21 +121,15 @@ $(document).ready(function(){
 		// force the map to refresh because otherwise it is all hokey.
 		google.maps.event.trigger(myMap,'resize');
 
-		// empty the elements where I append cloned child elements.
-		// $('.detail-hours').empty();
-		// $('.detail-reviews').empty();
-		// $('.detail-photos').empty();
 		resetDetails();
 	});
 
-	$('.back-to-details').click( function (e) {
+	$('.back-to-details a').click( function (e) {
 		e.preventDefault();
 
-		$('.show-for-directions').hide();
-		$('.hide-for-directions').show();
-
-		$('.detail-page-top').css('height', '40%');
-		google.maps.event.trigger(this.miniMap, "resize");
+		var ref = $(this).data('ref');
+		var placeObj = myMap.searchResultPlaces[ref];
+		placeObj.closeDirections();
 
 	});
 
@@ -390,7 +384,6 @@ function Place( placeResult, placeService ) {
 			.parent().find('.result-cat').text( this.simple_place.types.toString() )
 			.parent().find('.result-dist').text( dist + " miles")
 			.parent().find('.get-details-link').data('ref', this.simple_place.reference);
-			// .parent().appendTo('.result-list ol');
 
 		// TODO: fix this to remove magic number
 		if ( markerIdx <= 9 )	{
@@ -439,31 +432,19 @@ function Place( placeResult, placeService ) {
 			.parent().find('.detail-phone').text( this.detailed_place.formatted_phone_number )
 			.parent().find('.detail-get-directions a').attr('data-ref', this.simple_place.reference);
 
-		// if ( this.detailed_place.rating ) {
-		// 	detailInfo.find('.detail-rating').removeClass('hidden')
-		// 		.find('span').text( this.detailed_place.rating );
-		// } else {
-		// 	detailInfo.find('.detail-rating').addClass('hidden');
-		// }
-
-		// if ( this.detailed_place.website ) {
-		// 	detailInfo.find('.detail-website a').removeClass('hidden').attr('href', this.detailed_place.website );
-		// } else {
-		// 	console.log("****************************************NO WEBSITE");
-		// 	detailInfo.find('.detail-website a').addClass('hidden');
-		// }
-
 		if ( this.detailed_place.rating ) {
 			detailInfo.find('.detail-rating').show().find('span').text( this.detailed_place.rating );
 		} else {
+			console.log("****************************************NO RATING");
+
 			detailInfo.find('.detail-rating').hide();
 		}
 
 		if ( this.detailed_place.website ) {
-			detailInfo.find('.detail-website a').show().attr('href', this.detailed_place.website );
+			detailInfo.find('.detail-website').show().find('a').attr('href', this.detailed_place.website );
 		} else {
 			console.log("****************************************NO WEBSITE");
-			detailInfo.find('.detail-website a').hide();
+			detailInfo.find('.detail-website').hide();
 		}
 
 			
@@ -490,23 +471,15 @@ function Place( placeResult, placeService ) {
 
 			var infoWinExample = $('.hidden .info-win').clone();
 			infoWinExample.find('.info-win-name').text(self.simple_place.name)
-				.parent().find('.info-win-vicinity').text(self.simple_place.vicinity);
-			infoWinExample.remove('.info-win-link');
+				.parent().find('.info-win-vicinity').text(self.simple_place.vicinity)
+				.parent().find('.info-win-link').hide();
 			self.infowindow.setContent(infoWinExample.get(0));
-
-			self.infowindow.setContent("<div class='info-win'><div><strong>" + 
-				self.simple_place.name + "</strong></div><div>" + 
-				self.simple_place.vicinity + "</div></div>");
 		
 			self.infowindow.open(self.miniMap, this);
 		});
 
 		this.directionsDisplay.setMap(this.miniMap);
-
-
 		google.maps.event.addDomListener(window, 'load', this.miniMap);
-
-
 	};
 	
 	this.showHours = function () {
@@ -522,7 +495,6 @@ function Place( placeResult, placeService ) {
 		$('.detail-tabbed-section .section-1').show();
 		var today = new Date();
 		console.log( "found hours" );
-		//console.log(hoursData);
 
 		for ( var i=0; i < hoursData.periods.length; i++) {
 			
@@ -612,6 +584,7 @@ function Place( placeResult, placeService ) {
 		google.maps.event.trigger(this.miniMap, "resize");
 
 		$('.show-for-directions').show();
+		$('.back-to-details a').data('ref', this.simple_place.reference);
 
 	};
 
@@ -647,5 +620,28 @@ function Place( placeResult, placeService ) {
 
 		self.directionsDisplay.setPanel(document.getElementById("directions-text"));
 	}
+
+	this.closeDirections = function () {
+		console.log("In closeDirections -----------------");
+		$('.show-for-directions').hide();
+
+
+		$('.hide-for-directions').not('.check-before-display').show();
+
+		if ( this.detailed_place.rating ) {
+			$('.detail-rating').show();
+			console.log("showing rating");
+		}
+
+		if ( this.detailed_place.website ) {
+			$('.detail-website').show();
+			console.log("showing website");
+		}
+
+
+
+		$('.detail-page-top').css('height', '40%');
+		google.maps.event.trigger(this.miniMap, "resize");
+	};
 
 }  // end Place
