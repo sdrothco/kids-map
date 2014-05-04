@@ -6,18 +6,13 @@
 	<link rel="stylesheet" href="css/reset.css">
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="stylesheet" href="css/main.css">
-	<!-- <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/smoothness/jquery-ui.css"> -->
-	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.1/themes/start/jquery-ui.css">
-
+	<link href='http://fonts.googleapis.com/css?family=Fredericka+the+Great|Leckerli+One' rel='stylesheet' type='text/css'>
 
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBx9YAG2RqGH_TZd5fyD2Cqhc_32_tjkks&sensor=false&libraries=geometry,places"></script>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
- <!-- <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script> -->
-	<script type="text/javascript" src="js/jquery.omniwindow.js"></script>
+	<script src="js/jquery.omniwindow.js" type="text/javascript" ></script>
 	<script src="js/app.js"></script>
-
-
-	<link href='http://fonts.googleapis.com/css?family=Fredericka+the+Great|Leckerli+One' rel='stylesheet' type='text/css'>
+	
 </head>
 <body>
 	<header>
@@ -35,7 +30,8 @@
 	</header>
 
 	<section class="search-map">
-		<div class="container-map non-hidden-overflow">
+		<div class="container-map">
+		<!-- <div class="container-map non-hidden-overflow"> -->
 			<div class="search-wrapper column column-25">
 				<form id="search-form" onsubmit="" action="#">
 					<label>Search Near:</label>
@@ -63,7 +59,8 @@
 			</div>
 		</div>
 
-		<div class="results-wrapper container non-hidden-overflow">
+		<!-- <div class="results-wrapper container non-hidden-overflow"> -->
+		<div class="results-wrapper container">
 			<h3>Results Found:</h3>
 			<div class="result-list left column column-50 ">
 				<ol>
@@ -77,42 +74,22 @@
 	</section>
 
 	<section class="details">
-		
 		<div class="detail-page-top container non-hidden-overflow">
 			<div class="detail-wrapper column column-50">
-				
 				<div class="detail-info">
-					<div class="detail-name">Name</div>
+					<div class="detail-name"></div>
 					<div class="detail-address"></div>
 					<div class="detail-phone"></div>
-					<div class="detail-rating hide-for-directions check-before-display">
-						<span class="stars"></span>
-					</div>
-					<div class="detail-website hide-for-directions check-before-display button">
+					<div class="detail-rating"><span class="stars"></span></div>
+					<div class="detail-website button">
 						<a href="" target="_blank">Visit Website</a>
 					</div>
-					<div class="detail-get-directions hide-for-directions button">
+					<div class="detail-get-directions button">
 						<a href="">Get Directions</a>
 					</div>
 					<div class="back-to-main button">
 						<a href="">Back To Search Results</a>
 					</div>
-					<div class="back-to-details button show-for-directions">
-						<a data-ref="" href="">Back To Details</a>
-					</div>
-				</div>
-
-				<div class="directions-form-wrapper show-for-directions">
-					<form id="directions-form" onsubmit="" action="#">
-						<label>Start Location:</label>
-						<div class="directions-input-ctrls"><span><input id="directions-start" type="text" value="9707 kipling st 80021" /></span>
-						<input id="directions-submit" type="submit" value="Go!" /></div>
-					</form>
-				</div>
-
-				<div class="directions-text-panel show-for-directions">
-					<!-- <h3>Driving directions to <span class="directions-dest"></span></h3> -->
-					<div id="directions-text" style="height 100%"></div>
 				</div>
 			</div>
 
@@ -121,7 +98,7 @@
 			</div>	
 		</div>
 
-		<div class="detail-page-bottom hide-for-directions container non-hidden-overflow ">
+		<div class="detail-page-bottom container non-hidden-overflow ">
 			<div class="detail-tabbed-section column column-100">
 				<div class="collapsible-section section-1">
 		            <a href=""><span class="section-header arrow-down"></span>Hours</a>
@@ -135,30 +112,69 @@
 		            <a href=""><span class="section-header arrow-right"></span>Photos</a>
 					<div class="detail-photos tab-pane"></div>
 				</div>
-
 			</div>
 		</div>
 	</section>
 
+	<section class="directions">
+		<div class="directions-container non-hidden-overflow">
+			<div class="directions-wrapper column column-50">
+				
+				<div class="directions-info">
+					<div class="directions-name"></div>
+					<div class="directions-address"></div>
+					<div class="directions-phone"></div>
 
+					<div class="back-to-main button">
+						<a href="">Back To Search Results</a>
+					</div>
+					<div class="back-to-details button">
+						<a href="">Back To Details</a>
+					</div>
+				</div>
+
+				<div class="directions-form-wrapper">
+					<form id="directions-form" onsubmit="" action="#">
+						<label>Start Location:</label>
+						<div class="directions-input-ctrls"><span><input id="directions-start" type="text" value="9707 kipling st 80021" /></span>
+						<input id="directions-submit" type="submit" value="Go!" /></div>
+					</form>
+				</div>
+
+				<div class="directions-text-panel">
+					<div id="directions-text" style="height 100%"></div>
+				</div>
+			</div>
+
+			<div class="directions-mini-map column column-50 last">
+				<div id="directions-map"></div>
+			</div>	
+		</div>
+	</section>
+
+
+	<!-- For the About This App Box -->
 	<!-- Container for an overlay: --> 
 	<div class="ow-overlay ow-closed"></div>
 	<!-- Container for a modal window: --> 
 	<div class="modal ow-closed">
 		<div class="modal-content">
-		<h2><div style="text-align:left"><span class="script">Need to find something </span></div>
-			<div style="text-align:center"><span class="block">Fun To Do</span></div>
-			<div style="text-align:right"><span class="script"> with your kids?</span></div></h2>
+			<h2>
+				<!-- TODO: move styling --> 
+				<div class="left"><span class="script">Need to find something </span></div>
+				<div class="center"><span class="block">Fun To Do</span></div>
+				<div class="right"><span class="script"> with your kids?</span></div>
+			</h2>
 
-		<p>You've come to the right place!  Enter your location into the map's search box, and select the categories of activities you are interested in.  Click "Go!" and the map will show you the locations of those activities in your area.</p>
+			<p>You've come to the right place!  Enter your location into the map's search box, and select the categories of activities you are interested in.  Click "Go!" and the map will show you the locations of those activities in your area.</p>
 
-		<p>You can get more details for a location, such as hours, reviews, and directions by selecting "Get Details".</p>
+			<p>You can get more details for a location, such as hours, reviews, and directions by selecting "Get Details".</p>
 
-		<p><a class='close-button button' href='#'>Let's Go Have Fun!</a></p>
-		</div>
+			<p><a class='close-button button' href='#'>Let's Go Have Fun!</a></p>
+			</div>
 	</div>
 
-
+	<!-- Hidden elements used for cloning in the javascript, so I don't have to have html cluttering up my js file. -->
 	<div class="hidden">
 		<label class="chkbox-example column column-100">
 			<input class="search-cats" type="checkbox" name="search-cats" value="value">
@@ -188,8 +204,6 @@
 		</div>
 		<div class="about-box">
 		</div>
-
 	</div>
-	
 </body>
 </html>

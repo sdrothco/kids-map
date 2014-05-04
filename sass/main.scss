@@ -119,7 +119,8 @@ header {
 }
 
 
-
+///////////////////////////////////////////////////
+// styles for the search results.
 .results-wrapper {
 	margin-top: 1.2%;
 	visibility: hidden;
@@ -150,7 +151,6 @@ ul li { list-style-type: disc; }
 	display: none;
 }
 .result-dist {
-	//text-align: right;
 	position: absolute;
 	top: 0; 
 	right: 0;
@@ -162,6 +162,8 @@ ul li { list-style-type: disc; }
 	left: 1.3em;
 	top: .2em;
 	font-size: .9em;
+	//border: 1px solid blue;
+	display:inline;
 }
 
 
@@ -255,22 +257,24 @@ ul li { list-style-type: disc; }
 
 //////////////////////////////////////////
 // Styles for the top of the details page
-.details {
+.details, .directions {
 	display: none;
 	height: 100%;
 }
-.detail-name {
+.detail-name, .directions-name {
 	@extend h2; 
 }
-.detail-address, .detail-phone {
+.detail-address, .detail-phone 
+.directions-address, .directions-phone {
 	line-height: 1.5em;
 }
 
 .detail-page-top {
 	height: 40%;
 }
-.detail-mini-map {
+.detail-mini-map, .directions-mini-map {
 	height: 100%;
+	//border: 1px solid red;
 }
 #mini-map {
 	margin: 0 auto;
@@ -278,6 +282,14 @@ ul li { list-style-type: disc; }
 	width: 100%;
 	min-width: 100%;
 }
+
+
+
+/////////////////////////////////////////////
+// Styles for the directions page
+// .directions {
+// 	display: none;
+// }
 
 .directions-form-wrapper {
 	width: 100%;
@@ -311,23 +323,29 @@ ul li { list-style-type: disc; }
 	background-color: white;
 }
 
-.show-for-directions {
-	display: none;
+.directions-wrapper {
+	height: 100%;
+	//border: 1px solid blue;
+}
+
+#directions-map {
+	margin: 0 auto;
+	height: 80%;
+	width: 100%;
+	// min-width: 100%;
+
+	// height: 500px;
+	// width: 500px;
+}
+
+.directions-container {
+	@extend .container;
+	height: 100%;
 }
 
 
-.button {
-	margin: 1em 0;
-	& a { 
-		background-color: $accent-color-4;
-		@include button-grad( top, $accent-color-4, darken($accent-color-4, 15%) );
-		@include border-radius-mixin (2em);
-		text-decoration: none;
-		padding: .3em .5em;
-		color: black;
-		font-weight: bold;
-	}
-}
+
+
 
 
 //////////////////////////////////////
@@ -398,6 +416,21 @@ ul li { list-style-type: disc; }
 	display: inline-block;
 }
 
+
+/////////////////////////////////////////
+// multi purpose components
+.button {
+	margin: 1em 0;
+	& a { 
+		background-color: $accent-color-4;
+		@include button-grad( top, $accent-color-4, darken($accent-color-4, 15%) );
+		@include border-radius-mixin (2em);
+		text-decoration: none;
+		padding: .3em .5em;
+		color: black;
+		font-weight: bold;
+	}
+}
 
 .arrow-right {
 	display: inline-block;
@@ -562,5 +595,15 @@ span.stars span {
 			background-color: darken($accent-color-4, 20%);
 		}
 	}
+	.left {
+	text-align: left;
+	}
+	.center {
+		text-align: center;
+	}
+	.right {
+		text-align: right;
+	}
+
 
 }

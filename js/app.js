@@ -20,9 +20,7 @@ $(document).ready(function(){
 	var box = null;
 	var myMap = new Map();
 	var $modal = null;
-
-	// $( "#tabs" ).tabs();
-	//$( "#accordion" ).accordion();
+	var currentDetailsPlace = null;
 
 	google.maps.event.addDomListener(window, 'load', myMap);
 
@@ -54,37 +52,27 @@ $(document).ready(function(){
 		} else {
             $('.category-label span').removeClass('arrow-down').addClass('arrow-right');
 		}
-		
 	});
 
-
+	// These two event handlers are for the "About" modal dialog box.
 	$('.about-button').click( function (e) {
 		e.preventDefault();
 		console.log("clicked about button");
 		$modal = $('div.modal').omniWindow();
 		$modal.trigger('show');
-
 	});
-	$('.close-button').click(function(e){
+	$('.close-button').click( function (e) {
 		e.preventDefault();
 		$modal.trigger('hide');
 	});
 
 
-	// User clicked a search result from the list of headers next to the map.
-	$('.result-list').on('click', 'li', function() {
-		myMap.triggerMapMarker( $(this).data('markeridx') );
-	});
-
 	// The user submitted a search
 	$( "#search-form" ).submit(function( e ) {
 		e.preventDefault();
-		// console.log( "Handler for .submit() called." );
-		// console.log( $( this ).serialize() );
 
 		var search_cats = [];
 		var search_loc = $('input#search').val();
-		//console.log( search_loc );
 		$('.category-boxes .search-cats:checked').each( function() {
 			console.log($(this).attr('value'));
 			search_cats.push($(this).attr('value'));
@@ -95,13 +83,14 @@ $(document).ready(function(){
 		myMap.clearMarkers();
 
 		var searchKeys = processCategories(search_cats);
-		console.log(searchKeys);
+		//console.log(searchKeys);
 
 		myMap.doMapSearch( search_loc, searchKeys );
 	});
 	
 	// Get the details for a map marker or result header show the details page.
 	$('#map, .results-wrapper').on('click', '.get-details-link', function(e) {
+		console.log("-------------------------Clicked get details");
 		e.preventDefault();
 
 		$('.details').show();
@@ -109,9 +98,19 @@ $(document).ready(function(){
 
 		var ref = $(this).data('ref');
 		var placeObj = myMap.searchResultPlaces[ref];
+		currentDetailsPlace = placeObj;
 		placeObj.showDetails();
 
 	});
+
+
+	// User clicked a search result from the list of headers next to the map.
+	$('.result-list').on('click', "li > div:not('.result-get-details')", function() {
+		console.log("-------------------------Clicked list item");
+		console.log($(this).parent().attr('data-markeridx'));
+		myMap.triggerMapMarker( $(this).parent().attr('data-markeridx') );
+	});
+
 
 	$('.back-to-main').click( function (e) {
 		console.log("In back-to-main click");
@@ -121,17 +120,11 @@ $(document).ready(function(){
 		// force the map to refresh because otherwise it is all hokey.
 		google.maps.event.trigger(myMap,'resize');
 
+		currentDetailsPlace.closeDirections();
 		resetDetails();
 	});
 
-	$('.back-to-details a').click( function (e) {
-		e.preventDefault();
 
-		var ref = $(this).data('ref');
-		var placeObj = myMap.searchResultPlaces[ref];
-		placeObj.closeDirections();
-
-	});
 
     $('.collapsible-section a').click( function(e) {
        e.preventDefault();
@@ -159,28 +152,29 @@ $(document).ready(function(){
     
 
     $('.detail-get-directions a').click( function (e) {
-		console.log("clicked get directions");
 		e.preventDefault();
 
-		var ref = $(this).data('ref');
-		var placeObj = myMap.searchResultPlaces[ref];
-		placeObj.showDirections();
+		$('.details').hide();
+		$('.directions').show();
+		currentDetailsPlace.showDirectionsPage();
     });
+    // Clicked back to detail button, close directions and reopen details.
+	$('.back-to-details a').click( function (e) {
+		e.preventDefault();
+
+		$('.details').show();
+		$('.directions').hide();
+		currentDetailsPlace.closeDirections();
+	});
 
 	$( "#directions-form" ).submit(function( e ) {
 		e.preventDefault();
-		console.log("in submit directions form");
 
-		var ref = $('.detail-get-directions a').data('ref');
-		var placeObj = myMap.searchResultPlaces[ref];
-		placeObj.displayDirections();
+		currentDetailsPlace.displayDirections();
 	});
 
 	// Start the page off with all the categories checked
 	$('#all-chkbox').click();
-
-
-	
 
 });
 
@@ -189,7 +183,7 @@ function resetDetails() {
 	$('.detail-hours').empty().hide().parent().hide();
 	$('.detail-reviews').empty().hide().parent().hide();
 	$('.detail-photos').empty().hide().parent().hide();
-
+	currentDetailsPlace = null;
 
 }
 
@@ -366,20 +360,20 @@ function Place( placeResult, placeService ) {
 	this.miniMapMarkers = [];
 	this.infowindow = null;
 	this.miniMap = null;
+
+	this.directionsMap = null;
+	this.directionsMarker = null;
 	this.myService = placeService;
 	
 	this.directionsService = new google.maps.DirectionsService();
 	this.directionsDisplay = new google.maps.DirectionsRenderer();
-	//this.directionsDisplay.setMap(this.miniMap);
 
 	this.showHeader = function ( searchAddr, markerIdx ) {
 		$('.results-wrapper').css('visibility', 'visible');
 
-		//console.log("In showHeader");
 		var resultItem = $('.hidden .result-item').clone();
-
 		var dist = (google.maps.geometry.spherical.computeDistanceBetween(searchAddr, this.simple_place.geometry.location)/1609.344).toFixed(2);
-		resultItem.data('markeridx', markerIdx);
+		resultItem.attr('data-markeridx', markerIdx);
 		resultItem.find('.result-name').text( this.simple_place.name )
 			.parent().find('.result-cat').text( this.simple_place.types.toString() )
 			.parent().find('.result-dist').text( dist + " miles")
@@ -401,7 +395,7 @@ function Place( placeResult, placeService ) {
 			if (status == google.maps.places.PlacesServiceStatus.OK) {
 
 				self.detailed_place = place;
-				console.log("details = ");
+				console.log("$$$$$details = ");
 				console.log(self.detailed_place);
 
 				self.showContactInfo();
@@ -414,7 +408,6 @@ function Place( placeResult, placeService ) {
 				$('.section-header').addClass('arrow-right').removeClass('arrow-down');
 				$('.detail-tabbed-section .collapsible-section:visible:first div').show()
 					.parent().find('.section-header').addClass('arrow-down').removeClass('arrow-right');
-
 			}
 		});
 	};
@@ -429,8 +422,8 @@ function Place( placeResult, placeService ) {
 		detailInfo.detach().find('.detail-name').text( this.detailed_place.name )
 			.parent().find('.detail-address').text( this.detailed_place.formatted_address )
 			//.parent().find('.detail-address').html( this.detailed_place.adr_address )
-			.parent().find('.detail-phone').text( this.detailed_place.formatted_phone_number )
-			.parent().find('.detail-get-directions a').attr('data-ref', this.simple_place.reference);
+			.parent().find('.detail-phone').text( this.detailed_place.formatted_phone_number );
+			//.parent().find('.detail-get-directions a').attr('data-ref', this.simple_place.reference);
 
 		if ( this.detailed_place.rating ) {
 			detailInfo.find('.detail-rating').show().find('span').text( this.detailed_place.rating );
@@ -478,7 +471,7 @@ function Place( placeResult, placeService ) {
 			self.infowindow.open(self.miniMap, this);
 		});
 
-		this.directionsDisplay.setMap(this.miniMap);
+		//this.directionsDisplay.setMap(this.directionsMap);
 		google.maps.event.addDomListener(window, 'load', this.miniMap);
 	};
 	
@@ -573,18 +566,25 @@ function Place( placeResult, placeService ) {
 		}
 	};
 
-	this.showDirections = function () {
-		console.log("in showDirections");
+	this.showDirectionsPage = function () {
+		console.log("in showDirectionsPage");
+		console.log(this);
 
-		// hide the parts of the screen that are not needed for directions display.
-		$('.hide-for-directions').hide();
+		var directionsInfo = $('.directions-info');
+		console.log(directionsInfo);
+
+		directionsInfo.detach().find('.directions-name').text( this.detailed_place.name )
+			.parent().find('.directions-address').text( this.detailed_place.formatted_address )
+			.parent().find('.directions-phone').text( this.detailed_place.formatted_phone_number );
+			//.parent().find('.back-to-details a').attr('data-ref', this.simple_place.reference);
+
+		directionsInfo.prependTo('.directions-wrapper');
 
 		// resize the top of the detail page to make the map bigger for directions display.
-		$('.detail-page-top').css('height', '80%');
-		google.maps.event.trigger(this.miniMap, "resize");
+		// $('.detail-page-top').css('height', '80%');
+		// google.maps.event.trigger(this.miniMap, "resize");
 
-		$('.show-for-directions').show();
-		$('.back-to-details a').data('ref', this.simple_place.reference);
+		this.showDirectionsMap();
 
 	};
 
@@ -602,12 +602,14 @@ function Place( placeResult, placeService ) {
 		// DRIVING, WALKING, BICYCLING, TRANSIT
 		var selectedMode = "DRIVING";
 
+		// Remove the original marker so it doesn't cover the route markers.
+		self.directionsMarker.setMap(null);
+
 		var request = {
 			origin:start,
 			destination:end,
 			// Note that Javascript allows us to access the constant
-			// using square brackets and a string value as its
-			// "property."
+			// using square brackets and a string value as its "property."
 			travelMode: google.maps.TravelMode[selectedMode]
 		};
 		self.directionsService.route(request, function(response, status) {
@@ -621,26 +623,47 @@ function Place( placeResult, placeService ) {
 		self.directionsDisplay.setPanel(document.getElementById("directions-text"));
 	}
 
+	this.showDirectionsMap = function () {
+		console.log("in showDirectionsMap");
+		//this.infowindow = new google.maps.InfoWindow();
+		var mapOptions = {
+			zoom: 15,
+			mapTypeId: google.maps.MapTypeId.ROADMAP,
+			center: this.simple_place.geometry.location
+		};
+		this.directionsMap = new google.maps.Map(document.getElementById('directions-map'), mapOptions);
+		this.directionsMarker = new google.maps.Marker({
+			map: this.directionsMap,
+			position: this.simple_place.geometry.location
+		});
+		//this.directionsMapMarkers.push(marker);
+		google.maps.event.addListener(this.directionsMarker, 'click', function() {
+
+			var infoWinExample = $('.hidden .info-win').clone();
+			infoWinExample.find('.info-win-name').text(self.simple_place.name)
+				.parent().find('.info-win-vicinity').text(self.simple_place.vicinity)
+				.parent().find('.info-win-link').hide();
+			self.infowindow.setContent(infoWinExample.get(0));
+		
+			self.infowindow.open(self.directionsMap, this);
+		});
+
+		this.directionsDisplay.setMap(this.directionsMap);
+		google.maps.event.addDomListener(window, 'load', this.directionsMap);
+	};
+
 	this.closeDirections = function () {
 		console.log("In closeDirections -----------------");
-		$('.show-for-directions').hide();
 
+		// clear the directions text
+		this.directionsDisplay.setPanel(null);
 
-		$('.hide-for-directions').not('.check-before-display').show();
+		//this.directionsDisplay.setMap(null);
+		this.directionsDisplay.setDirections({routes: []});
 
-		if ( this.detailed_place.rating ) {
-			$('.detail-rating').show();
-			console.log("showing rating");
-		}
+		// todo: clear start location value
 
-		if ( this.detailed_place.website ) {
-			$('.detail-website').show();
-			console.log("showing website");
-		}
-
-
-
-		$('.detail-page-top').css('height', '40%');
+		// $('.detail-page-top').css('height', '40%');
 		google.maps.event.trigger(this.miniMap, "resize");
 	};
 
