@@ -369,7 +369,8 @@ function Place( placeResult, placeService ) {
 	this.directionsDisplay = new google.maps.DirectionsRenderer();
 
 	this.showHeader = function ( searchAddr, markerIdx ) {
-		$('.results-wrapper').css('visibility', 'visible');
+		//$('.results-wrapper').css('visibility', 'visible');
+		$('.results-wrapper').show();
 
 		var resultItem = $('.hidden .result-item').clone();
 		var dist = (google.maps.geometry.spherical.computeDistanceBetween(searchAddr, this.simple_place.geometry.location)/1609.344).toFixed(2);

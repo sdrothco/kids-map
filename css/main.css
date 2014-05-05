@@ -68,6 +68,7 @@ body {
 /* line 70, ../sass/main.scss */
 header {
   background-color: white;
+  margin-bottom: 2%;
   position: relative;
 }
 /* line 74, ../sass/main.scss */
@@ -147,8 +148,8 @@ section.search-map {
 
 /* line 125, ../sass/main.scss */
 .container-map {
-  width: 100%;
-  height: 100%;
+  height: 55%;
+  min-height: 55%;
   overflow: auto;
   border: 0;
   clear: both;
@@ -157,6 +158,10 @@ section.search-map {
 /* line 136, ../sass/main.scss */
 .search-wrapper {
   overflow: auto;
+}
+/* line 138, ../sass/main.scss */
+.search-wrapper form {
+  margin-bottom: 2%;
 }
 /* line 141, ../sass/main.scss */
 .search-wrapper form > label {
@@ -168,6 +173,7 @@ section.search-map {
 .search-ctrl {
   display: table;
   width: 100%;
+  margin-bottom: 1%;
 }
 /* line 152, ../sass/main.scss */
 .search-ctrl span {
@@ -220,7 +226,8 @@ section.search-map {
 
 /* line 191, ../sass/main.scss */
 .content-wrapper {
-  height: 55%;
+  height: 100%;
+  min-height: 100%;
   position: relative;
 }
 
