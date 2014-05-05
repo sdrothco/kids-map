@@ -26,7 +26,7 @@ $(document).ready(function(){
 
 	// Add the place category checkboxes to the form.
 	for ( var key in place_categories ) {
-		box = $('.hidden .chkbox-example').clone();
+		box = $('.hidden .chkbox-item').clone();
 		box.find('.box-label').text( place_categories[key].name );
 		box.find('input').attr('value', key )
 			.parent().appendTo('.category-boxes');
@@ -36,9 +36,9 @@ $(document).ready(function(){
 	// and vice versa.
 	$('#all-chkbox').click( function() {
 		if( this.checked ) {
-			$('.chkbox-example input').prop('checked', true);
+			$('.chkbox-item input').prop('checked', true);
 		} else {
-			$('.chkbox-example input').prop('checked', false);
+			$('.chkbox-item input').prop('checked', false);
 		}
 	});
 

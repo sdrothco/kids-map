@@ -51,11 +51,7 @@ html, body {
 
 }
 
-section.search-map {
-	//height: 75%;
-	height: 100%;
-	width: 100%;
-}
+
 
 body {
     max-width: 960px;   
@@ -67,9 +63,13 @@ body {
     line-height:  1.15;
 }
 
+
+////////////////////////////////////////////////////////////
+// Header styles
+//
 header {
 	background-color: $header-color;
-	margin-bottom: 2%;
+	//margin-bottom: 2%;
 	position: relative;
 	h1 {
 		padding: .5em 0;
@@ -77,7 +77,6 @@ header {
 	}
 
 }
-
 .about-button {
 	position: absolute;
 	right: .5%;
@@ -93,8 +92,6 @@ header {
 		}
 	}
 }
-
-
 .rainbow-line {
 	height: 1em;
 	padding: 0;
@@ -105,7 +102,6 @@ header {
 .accent-color-3 { background-color: $accent-color-3; }
 .accent-color-4 { background-color: $accent-color-4; }
 .accent-color-5 { background-color: $accent-color-5; }
-
 
 .script {
 	font-family: 'Leckerli One', 'cursive';
@@ -119,11 +115,112 @@ header {
 }
 
 
+/////////////////////////////////////////////////
+// Styles for the Map Search controls
+section.search-map {
+	//height: 75%;
+	height: 100%;
+	width: 100%;
+}
+.container-map {
+    width: 100%;
+    height: 100%;
+    // height: 55%;
+    // min-height: 55%;
+    //overflow: visible;
+    overflow: auto;
+
+    border: 0;
+    clear: both;
+}
+.search-wrapper {
+	//height:100%;
+	form {
+		//margin-bottom: 2%;
+	}
+	form > label {
+		width: 100%;
+		font-weight: bold;
+	}
+	overflow: auto;
+}
+
+.search-ctrl {
+	display: table;
+    width: 100%;
+	//margin-bottom: 1%;
+	span {
+		display: table-cell;
+		width: 100%;
+		padding: 0px 5px 0 0;
+	}
+	#search {
+		width: 100%;
+	}
+	#search-submit {
+		display: table-cell;
+	}
+}
+.category-boxes {
+	display: block;
+	font-size: .8em;
+	background-color: white;
+	overflow: auto;
+} 
+.category-label a {
+	color: black;
+	&:link {
+		text-decoration: none;
+	}
+}
+.chkbox-item {
+	display: block;
+	min-width: 100%;
+}
+
+
+
+.info-win {
+	min-width: 100px;
+	min-height: 50px;
+	line-height: 1.5em;
+	a {
+		font-weight: bold;
+	}
+}
+.content-wrapper {
+	height: 55%;
+	//height: 100%;
+	//min-height: 100%;
+    position: relative;
+}
+// .map-content {
+// 	height: 100%;
+// 	min-height: 100%;
+//     position: relative;
+// }
+.map-wrapper {
+	right:0;
+    bottom:0;
+    top:0;
+    left:0;
+	overflow:hidden;
+    padding-bottom:1%;
+    position:absolute;
+}
+#map {
+	height: 100%;
+	width: 100%;
+	border: 1px solid #555;
+}
+
+
 ///////////////////////////////////////////////////
 // styles for the search results.
 .results-wrapper {
-	margin-top: 1.2%;
-	visibility: hidden;
+	// margin-top: 1.2%;
+	// visibility: hidden;
+	display:none;
 }
 
 ol li, ul li {
@@ -166,95 +263,6 @@ ul li { list-style-type: disc; }
 	display:inline;
 }
 
-
-
-
-.search-wrapper {
-	height:100%;
-	form {
-		margin-bottom: 2%;
-	}
-	form > label {
-		width: 100%;
-		font-weight: bold;
-	}
-}
-
-.search-ctrl {
-	display: table;
-    width: 100%;
-	margin-bottom: 1%;
-	span {
-		display: table-cell;
-		width: 100%;
-		padding: 0px 5px 0 0;
-	}
-	#search {
-		width: 100%;
-	}
-	#search-submit {
-		display: table-cell;
-	}
-}
-.category-boxes {
-	display: block;
-	font-size: .8em;
-	background-color: white;
-    border-radius-left-bottom: 5px;
-    border-radius-right-bottom: 5px;
-} 
-.category-label a {
-	color: black;
-	&:link {
-		text-decoration: none;
-	}
-}
-
-
-
-.info-win {
-	min-width: 100px;
-	min-height: 50px;
-	line-height: 1.5em;
-	a {
-		font-weight: bold;
-	}
-}
-.content-wrapper {
-	height: 100%;
-	min-height: 100%;
-    position: relative;
-}
-// .map-content {
-// 	height: 100%;
-// 	min-height: 100%;
-//     position: relative;
-// }
-.map-wrapper {
-	right:0;
-    bottom:0;
-    top:0;
-    left:0;
-	overflow:hidden;
-    padding-bottom:1%;
-    position:absolute;
-}
-.container-map {
-    width: 100%;
-    height: 55%;
-    min-height: 55%;
-    overflow: hidden;
-    border: 0;
-    clear: both;
-}
-#map {
-	height: 100%;
-	width: 100%;
-	border: 1px solid #555;
-}
-
-
-
 //////////////////////////////////////////
 // Styles for the top of the details page
 .details, .directions {
@@ -283,6 +291,80 @@ ul li { list-style-type: disc; }
 	min-width: 100%;
 }
 
+
+
+
+
+//////////////////////////////////////
+// For the bottom of the detail page
+.detail-page-bottom {
+	height: 40%;
+}
+
+.detail-tabbed-section {
+    margin: 1% 0;
+    width: 100%;
+    height: 100%;
+}
+.collapsible-section {
+	max-height: 100%;
+    margin-top: 6px;
+    background-color: white;
+    border-radius: 5px;
+	
+	overflow: auto;
+
+}
+.collapsible-section > a {
+    display: block;
+    background-color: $accent-color-4;
+    @include button-grad( top, $accent-color-4, darken($accent-color-4, 15%) );
+    // width: 100%;
+    padding: .3em .3em;
+    border-radius: 5px;
+    color: black;
+}
+.collapsible-section > a:link {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+.section-1 div, .section-2 div, .section-3 div {
+	display: none;
+}
+.tab-pane {
+    height: 200px;
+    padding: 1%;
+    // height: 25%;
+    // min-height: 25%;
+    overflow: auto;
+}
+.photo {
+	float: left;
+	margin: 1.5%;
+}
+
+.review {
+	margin-bottom: 1%;
+}
+
+.hours {
+	margin: .6% 0;
+}
+.today {
+	font-weight: bold;
+}
+.day {
+	width: 10%;
+	text-align: right;
+	display: inline-block;
+	margin-right: 2%;
+}
+.times {
+	width: 25%;
+	text-align: left;
+	display: inline-block;
+}
 
 
 /////////////////////////////////////////////
@@ -347,76 +429,6 @@ ul li { list-style-type: disc; }
 
 
 
-
-//////////////////////////////////////
-// For the bottom of the detail page
-.detail-page-bottom {
-	height: 40%;
-}
-
-.detail-tabbed-section {
-    margin: 1% 0;
-    width: 100%;
-    height: 100%;
-}
-.collapsible-section {
-	max-height: 100%;
-    margin-top: 6px;
-    background-color: white;
-    border-radius: 5px;
-}
-.collapsible-section > a {
-    display: block;
-    background-color: $accent-color-4;
-    @include button-grad( top, $accent-color-4, darken($accent-color-4, 15%) );
-    // width: 100%;
-    padding: .3em .3em;
-    border-radius: 5px;
-    color: black;
-}
-.collapsible-section > a:link {
-    text-decoration: none;
-    font-weight: bold;
-    color: black;
-}
-.section-1 div, .section-2 div, .section-3 div {
-	display: none;
-}
-.tab-pane {
-    height: 200px;
-    padding: 1%;
-    // height: 25%;
-    // min-height: 25%;
-    overflow: auto;
-}
-.photo {
-	float: left;
-	margin: 1.5%;
-}
-
-.review {
-	margin-bottom: 1%;
-}
-
-.hours {
-	margin: .6% 0;
-}
-.today {
-	font-weight: bold;
-}
-.day {
-	width: 10%;
-	text-align: right;
-	display: inline-block;
-	margin-right: 2%;
-}
-.times {
-	width: 25%;
-	text-align: left;
-	display: inline-block;
-}
-
-
 /////////////////////////////////////////
 // multi purpose components
 .button {
@@ -464,11 +476,11 @@ span.stars span {
 
 
 /////////////////////////////////////////
-/* For the GRID SYSTEM */
+// For the GRID SYSTEM 
 .container {
     width: 100%;
     // height: 100%;
-    overflow: hidden;
+    //overflow: hidden;
     border: 0;
     clear: both;
 }
@@ -604,6 +616,4 @@ span.stars span {
 	.right {
 		text-align: right;
 	}
-
-
 }

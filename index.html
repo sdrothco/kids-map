@@ -32,6 +32,7 @@
 	<section class="search-map">
 		<div class="container-map">
 		<!-- <div class="container-map non-hidden-overflow"> -->
+			<!-- <div class="search-wrapper column column-25 non-hidden-overflow"> -->
 			<div class="search-wrapper column column-25">
 				<form id="search-form" onsubmit="" action="#">
 					<label>Search Near:</label>
@@ -42,7 +43,7 @@
 					<div class="category-label collapsible-section" >
 						<a href="#">Categories <span class="arrow-down"></span></a></div>
 					<div class="category-boxes container">
-						<label class="column column-100">
+						<label class="chkbox-item">
 							<input id="all-chkbox" type="checkbox" name="checkbox" value="all">
 							<span class="box-label">All</span>
 						</label>
@@ -176,7 +177,8 @@
 
 	<!-- Hidden elements used for cloning in the javascript, so I don't have to have html cluttering up my js file. -->
 	<div class="hidden">
-		<label class="chkbox-example column column-100">
+		<!-- <label class="chkbox-item column column-100"> -->
+		<label class="chkbox-item">
 			<input class="search-cats" type="checkbox" name="search-cats" value="value">
 			<span class="box-label"></span>
 		</label>
