@@ -312,7 +312,7 @@ ul li { list-style-type: disc; }
     background-color: white;
     border-radius: 5px;
 	
-	overflow: auto;
+	//overflow: auto;
 
 }
 .collapsible-section > a {
@@ -323,6 +323,7 @@ ul li { list-style-type: disc; }
     padding: .3em .3em;
     border-radius: 5px;
     color: black;
+
 }
 .collapsible-section > a:link {
     text-decoration: none;
@@ -334,10 +335,10 @@ ul li { list-style-type: disc; }
 }
 .tab-pane {
     height: 200px;
-    padding: 1%;
-    // height: 25%;
-    // min-height: 25%;
-    overflow: auto;
+    padding: .5%;
+    //height: 25%;
+    //min-height: 25%;
+    overflow: auto !important;
 }
 .photo {
 	float: left;
