@@ -39,10 +39,6 @@ h5 {font-size: 0.75em;} // 12px
 h6 {font-size: 0.625;} // 10px
 p {font-size: 0.75em; padding-bottom: 1.125px;} // 12px, 18px
 
-// img {
-// 	max-width: 100%;
-// }
-
 html, body {
 	height: 100%;
 	min-height:100%;
@@ -58,7 +54,6 @@ body {
     margin: 0 auto;
     background-color: $base-color;
     font-size: 16px;
-    // font-family: Helvetica;
     font-family: futura-pt, Tahoma, 'Helvetica Neue', Arial, Helvetica, sans-serif;
     line-height:  1.15;
 }
@@ -69,7 +64,8 @@ body {
 //
 header {
 	background-color: $header-color;
-	margin-bottom: 2%;
+	margin-bottom: 10px;
+	height: 105px;
 	position: relative;
 	h1 {
 		padding: .5em 0;
@@ -114,21 +110,24 @@ header {
     font-size: 2em;
 }
 
-
+.clear {
+ 	clear: both;
+}
 /////////////////////////////////////////////////
 // Styles for the Map Search controls
-section.search-map {
-	//height: 75%;
-	height: 100%;
-	width: 100%;
-}
+// section.search-map {
+// 	//height: 75%;
+// 	height: 82%;
+// 	width: 100%;
+// }
+
 .container-map {
     //width: 100%;
     //height: 100%;
-    height: 55%;
-    min-height: 55%;
+    height: 65%;
+    min-height: 65%;
     //overflow: visible;
-    overflow: auto;
+    //overflow: auto;
 
     border: 0;
     clear: both;
@@ -278,7 +277,7 @@ ul li { list-style-type: disc; }
 }
 
 .detail-page-top {
-	height: 40%;
+	height: 60%;
 }
 .detail-mini-map, .directions-mini-map {
 	height: 100%;
@@ -578,7 +577,7 @@ span.stars span {
 
 	position: fixed;
 	z-index: 20;
-	height: 50%;
+	height: auto;
 	width: 50%;
 	overflow: auto;
 	left: 50%;
@@ -600,7 +599,7 @@ span.stars span {
 		text-align: center;
 		font-size: 1.5em;
 		margin: 0 auto;
-		margin-top: 5%;
+		margin-top: 2%;
 		
 		background-color: darken($accent-color-4, 10%);
 		color: white;
@@ -617,4 +616,11 @@ span.stars span {
 	.right {
 		text-align: right;
 	}
+}
+
+.page-content {
+	height: -webkit-calc(100% - 115px);
+	height: -moz-calc(100% - 115px);
+	height: calc(100% - 115px);
+	width: 100%;
 }

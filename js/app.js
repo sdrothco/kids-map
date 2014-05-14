@@ -17,20 +17,11 @@ var place_categories = {
 
 
 $(document).ready(function(){
-	var box = null;
-	var myMap = new Map();
-	var $modal = null;
-	var currentDetailsPlace = null;
+	var myMap = new Map();			// the main search map
+	var modal = null;				// the modal dialog box
+	var currentDetailsPlace = null; // The Place obj that we are showing details for.
 
-	google.maps.event.addDomListener(window, 'load', myMap);
-
-	// Add the place category checkboxes to the form.
-	for ( var key in place_categories ) {
-		box = $('.hidden .chkbox-item').clone();
-		box.find('.box-label').text( place_categories[key].name );
-		box.find('input').attr('value', key )
-			.parent().appendTo('.category-boxes');
-	}
+	initMain(myMap);
 
 	// When the "All" checkbox is selected, select all the other checkboxes,
 	// and vice versa.
@@ -41,6 +32,8 @@ $(document).ready(function(){
 			$('.chkbox-item input').prop('checked', false);
 		}
 	});
+	// Start the page off with all the categories checked
+	$('#all-chkbox').click();
 
 	// Roll up or roll down the categories boxes when the user clicks the toggle arrow.
 	$('.category-label').on('click', function(e) {
@@ -58,12 +51,12 @@ $(document).ready(function(){
 	$('.about-button').click( function (e) {
 		e.preventDefault();
 		console.log("clicked about button");
-		$modal = $('div.modal').omniWindow();
-		$modal.trigger('show');
+		modal = $('div.modal').omniWindow();
+		modal.trigger('show');
 	});
 	$('.close-button').click( function (e) {
 		e.preventDefault();
-		$modal.trigger('hide');
+		modal.trigger('hide');
 	});
 
 
@@ -87,14 +80,27 @@ $(document).ready(function(){
 
 		myMap.doMapSearch( search_loc, searchKeys );
 	});
-	
+
+
+
+	// User clicked a search result from the list of headers next to the map.
+	$('.result-list').on('click', "li", function() {
+		console.log("-------------------------Clicked list item");
+		myMap.triggerMapMarker( $(this).attr('data-markeridx') );
+	});
+
 	// Get the details for a map marker or result header show the details page.
-	$('#map, .results-wrapper').on('click', '.get-details-link', function(e) {
+	$('#map, .result-list').on('click', '.get-details-link', function(e) {
 		console.log("-------------------------Clicked get details");
 		e.preventDefault();
+		e.stopPropagation();
 
 		$('.details').show();
 		$('.search-map').hide();
+
+		// Close any open infowindows, because otherwise they'll stil be open when you
+		// return from the details -- even if it wasn't the same place.
+		if ( myMap.infowindow.isOpened ) myMap.infowindow.close();
 
 		var ref = $(this).data('ref');
 		var placeObj = myMap.searchResultPlaces[ref];
@@ -104,21 +110,17 @@ $(document).ready(function(){
 	});
 
 
-	// User clicked a search result from the list of headers next to the map.
-	$('.result-list').on('click', "li > div:not('.result-get-details')", function() {
-		console.log("-------------------------Clicked list item");
-		console.log($(this).parent().attr('data-markeridx'));
-		myMap.triggerMapMarker( $(this).parent().attr('data-markeridx') );
-	});
-
+	
 
 	$('.back-to-main').click( function (e) {
 		console.log("In back-to-main click");
 		e.preventDefault();
 		$('.details').hide();
+		$('.directions').hide();
 		$('.search-map').show();
+		
 		// force the map to refresh because otherwise it is all hokey.
-		google.maps.event.trigger(myMap,'resize');
+		google.maps.event.trigger(myMap.map,'resize');
 
 		currentDetailsPlace.closeDirections();
 		resetDetails();
@@ -173,11 +175,25 @@ $(document).ready(function(){
 		currentDetailsPlace.displayDirections();
 	});
 
-	// Start the page off with all the categories checked
-	$('#all-chkbox').click();
-
 });
 
+
+function initMain(myMap) {
+	var box = null;
+
+	google.maps.event.addDomListener(window, 'load', myMap);
+
+	// Add the place category checkboxes to the form.
+	for ( var key in place_categories ) {
+		box = $('.hidden .chkbox-item').clone();
+		box.find('.box-label').text( place_categories[key].name );
+		box.find('input').attr('value', key )
+			.parent().appendTo('.category-boxes');
+	}
+}
+
+
+// Clear out the details page so that it is ready for the next place.
 function resetDetails() {
 	// empty the elements where I append cloned child elements.
 	$('.detail-hours').empty().hide().parent().hide();
@@ -238,7 +254,10 @@ function Map() {
 	this.mapMarkers = [];
 	this.searchResultPlaces = [];
 	
+	google.maps.InfoWindow.prototype.isOpened = false;
 	this.infowindow = new google.maps.InfoWindow();
+
+
 	this.bounds = new google.maps.LatLngBounds();
 
 	var mapOptions = {
@@ -253,6 +272,7 @@ function Map() {
 	// a map marker is clicked.  (Open an info window.)
 	this.triggerMapMarker = function( markerIdx ) {
 		console.log( "In triggerMapMarker" );
+		console.log(self.mapMarkers);
 		google.maps.event.trigger( self.mapMarkers[ markerIdx ],"click");
 	};
 
@@ -326,9 +346,17 @@ function Map() {
 			self.infowindow.setContent(infoWinExample.get(0));
 
 			self.infowindow.open(self.map, this);
-			
+			self.infowindow.isOpened = true;
+
 		});
-		
+
+		// monitor the closeclick event and set opened state false when the close
+		// button is clicked.
+		(function (w) {
+			google.maps.event.addListener(w, "closeclick", function (e) {
+				w.isOpened = false;
+			});
+		})(self.infowindow);
 
 		self.map.fitBounds(self.bounds);
 	}
