@@ -35,7 +35,8 @@ $(document).ready(function(){
 		}
 	});
 	// Start the page off with all the categories checked
-	$('#all-chkbox').click();
+	if ( $('#all-chkbox').prop('checked', false) )
+		$('#all-chkbox').click();
 
 	// Roll up or roll down the categories boxes when the user clicks the toggle arrow.
 	$('.category-label').on('click', function(e) {
@@ -105,7 +106,7 @@ $(document).ready(function(){
 		// return from the details -- even if it wasn't the same place.
 		if ( myMap.infowindow.isOpened ) myMap.infowindow.close();
 
-		var ref = $(this).data('ref');
+		var ref = $(this).attr('data-ref');
 		var placeObj = myMap.searchResultPlaces[ref];
 		currentDetailsPlace = placeObj;
 		placeObj.showDetails();
@@ -365,7 +366,7 @@ function Map() {
 			var infoWinExample = $('.hidden .info-win').clone();
 			infoWinExample.find('.info-win-name').text(place.name)
 				.parent().find('.info-win-vicinity').text(place.vicinity)
-				.parent().find('.info-win-link a').data('ref', place.reference);
+				.parent().find('.info-win-link a').attr('data-ref', place.reference);
 			self.infowindow.setContent(infoWinExample.get(0));
 
 			self.infowindow.open(self.map, this);
@@ -433,9 +434,8 @@ function Place( placeResult, placeService ) {
 		dist = (google.maps.geometry.spherical.computeDistanceBetween(searchAddr, this.simple_place.geometry.location)/1609.344).toFixed(2);
 		resultItem.attr('data-markeridx', markerIdx);
 		resultItem.find('.result-name').text( this.simple_place.name )
-			.parent().find('.result-cat').text( this.simple_place.types.toString() )
 			.parent().find('.result-dist').text( dist + " miles")
-			.parent().find('.get-details-link').data('ref', this.simple_place.reference);
+			.parent().find('.get-details-link').attr('data-ref', this.simple_place.reference);
 
 		// Display it in two columns.
 		if ( markerIdx <= columnSize )	{
@@ -661,9 +661,11 @@ function Place( placeResult, placeService ) {
 			travelMode: google.maps.TravelMode[selectedMode]
 		};
 		this.directionsService.route(request, function(response, status) {
+			console.log("Directions service status", status);
 			if (status == google.maps.DirectionsStatus.OK) {
 				self.directionsDisplay.setDirections(response);
 			}
+			else alert("Could not find address: " + start);
 		});
 
 		this.directionsDisplay.setPanel(document.getElementById("directions-text"));

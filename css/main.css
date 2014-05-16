@@ -235,8 +235,7 @@ header h1 {
 /* line 189, ../sass/main.scss */
 .info-win {
   min-width: 100px;
-  min-height: 50px;
-  line-height: 1.5em;
+  min-height: 55px;
 }
 /* line 193, ../sass/main.scss */
 .info-win a {
@@ -285,8 +284,8 @@ ul li {
 }
 
 /* line 227, ../sass/main.scss */
-.result-cat {
-  display: none;
+.result-name {
+  display: inline-block;
 }
 
 /* line 230, ../sass/main.scss */
@@ -301,10 +300,10 @@ ul li {
 /* line 237, ../sass/main.scss */
 .result-get-details {
   position: relative;
-  left: 1.3em;
+  left: 1.5em;
   top: .2em;
   font-size: .9em;
-  display: inline;
+  display: block;
 }
 
 /* line 249, ../sass/main.scss */

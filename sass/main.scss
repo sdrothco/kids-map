@@ -188,8 +188,8 @@ header {
 }
 .info-win {
 	min-width: 100px;
-	min-height: 50px;
-	line-height: 1.5em;
+	min-height: 55px;
+	//line-height: 1.3em;
 	a {
 		font-weight: bold;
 	}
@@ -224,8 +224,8 @@ ul li { list-style-type: disc; }
 	position: relative;
 	width: 100%;
 }
-.result-cat {
-	display: none;
+.result-name {
+	display: inline-block;
 }
 .result-dist {
 	position: absolute;
@@ -236,10 +236,10 @@ ul li { list-style-type: disc; }
 }
 .result-get-details {
 	position: relative;
-	left: 1.3em;
+	left: 1.5em;
 	top: .2em;
 	font-size: .9em;
-	display:inline;
+	display: block;
 }
 
 
