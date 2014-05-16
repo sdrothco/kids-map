@@ -109,7 +109,6 @@ $(document).ready(function(){
 
 	});
 
-
 	
 
 	$('.back-to-main').click( function (e) {
@@ -242,7 +241,6 @@ $.fn.stars = function() {
 
 
 function Map() {
-	//console.log("In Map()");
 
 	// Keep a pointer to itself because "this" gets confused with jQuery callbacks
 	var self = this;
@@ -397,7 +395,6 @@ function Place( placeResult, placeService ) {
 	this.directionsDisplay = new google.maps.DirectionsRenderer();
 
 	this.showHeader = function ( searchAddr, markerIdx ) {
-		//$('.results-wrapper').css('visibility', 'visible');
 		$('.results-wrapper').show();
 
 		var resultItem = $('.hidden .result-item').clone();
@@ -415,6 +412,7 @@ function Place( placeResult, placeService ) {
 			resultItem.appendTo('.result-list.right ol');
 		}
 	};
+
 
 	this.showDetails = function () {
 		console.log("in showDetails");
@@ -440,6 +438,7 @@ function Place( placeResult, placeService ) {
 			}
 		});
 	};
+
 
 	this.showContactInfo = function () {
 		console.log("in showContactInfo");
@@ -475,6 +474,7 @@ function Place( placeResult, placeService ) {
 		if ( this.detailed_place.rating ) $('.stars').stars();
 	};
 
+
 	this.showMiniMap = function () {
 		console.log("in showMiniMap");
 		this.infowindow = new google.maps.InfoWindow();
@@ -504,6 +504,7 @@ function Place( placeResult, placeService ) {
 		google.maps.event.addDomListener(window, 'load', this.miniMap);
 	};
 	
+
 	this.showHours = function () {
 		console.log("in showHours");
 
@@ -544,9 +545,11 @@ function Place( placeResult, placeService ) {
 
 	};
 
+
 	this.showPhotos = function () {
-		console.log("In showPhotos");
-		var photoArr = this.detailed_place.photos;
+		var photoArr, newPhoto, attributionsArr, newAttribution, attrLink;
+
+		photoArr = this.detailed_place.photos;
 		if ( !photoArr ) {
 			console.log("No photos");
 			$('.detail-tabbed-section .section-3').hide();
@@ -556,72 +559,62 @@ function Place( placeResult, placeService ) {
 
 		for (var i =0; photoArr && i<photoArr.length; i++) {
 
-			var newPhoto = $('.hidden .photo').clone();
-			console.log(photoArr[i]);
-			newPhoto.find('img').attr('src', photoArr[i].getUrl({maxHeight: 200, maxWidth: 200}));
-			
-			var attributionsArr =  photoArr[i].html_attributions;
+			newPhoto = $('.hidden .photo').clone();
+			newPhoto.find('img').attr('src', photoArr[i].getUrl({maxHeight: 175, maxWidth: 175}));
+			attributionsArr =  photoArr[i].html_attributions;
 
 			for (var j=0; attributionsArr && j<attributionsArr.length; j++ ) {
-				var newAttribution = $('.hidden .photo-attribution').clone();
-				newAttribution.html( attributionsArr[j] ).appendTo(newPhoto);
+				newAttribution = $('.hidden .photo-attribution').clone();
+				attrLink = $(attributionsArr[j]).attr('target', '_blank');
+				newAttribution.html( attrLink ).appendTo(newPhoto);
 			}
 			newPhoto.appendTo('.detail-photos');
 		}
 	};
 
+
 	this.showReviews = function () {
-		console.log("In showReviews");
-		var reviewsArr = this.detailed_place.reviews;
+		var reviewsArr, newReview;
+
+		reviewsArr = this.detailed_place.reviews;
 		if ( !reviewsArr ) {
 			console.log("No reviews");
 			$('.detail-tabbed-section .section-2').hide();
 			return;
 		}
 		$('.detail-tabbed-section .section-2').show();
+
 		for (var i =0; reviewsArr && i<reviewsArr.length; i++) {
 
-			var newReview = $('.hidden .review').clone();
-			console.log(reviewsArr[i]);
-
+			newReview = $('.hidden .review').clone();
 			newReview.find('.review-author a').attr('href', reviewsArr[i].author_url)
 				.text(reviewsArr[i].author_name)
-				.closest('.review').find('.review-rating').text(reviewsArr[i].rating + " out of 5 stars")
-				// the review date is not supported by google places at this time.
-				//.parent().find('.review-date').text(new Date( reviewsArr[i].time ).toDateString())
+				.closest('.review').find('.review-rating')
+				.text(reviewsArr[i].rating + " out of 5 stars")
 				.parent().find('.review-text').html(reviewsArr[i].text);
 
 			newReview.appendTo('.detail-reviews');
 		}
 	};
 
+
 	this.showDirectionsPage = function () {
-		console.log("in showDirectionsPage");
-		console.log(this);
 
 		var directionsInfo = $('.directions-info');
-		console.log(directionsInfo);
-
 		directionsInfo.detach().find('.directions-name').text( this.detailed_place.name )
 			.parent().find('.directions-address').text( this.detailed_place.formatted_address )
 			.parent().find('.directions-phone').text( this.detailed_place.formatted_phone_number );
-			//.parent().find('.back-to-details a').attr('data-ref', this.simple_place.reference);
 
 		directionsInfo.prependTo('.directions-wrapper');
-
-		// resize the top of the detail page to make the map bigger for directions display.
-		// $('.detail-page-top').css('height', '80%');
-		// google.maps.event.trigger(this.miniMap, "resize");
-
 		this.showDirectionsMap();
-
 	};
+
 
 	this.displayDirections = function () {
 
 		var start = $('#directions-start').val();
 		var end = this.simple_place.geometry.location;
-		console.log("Calculating from " + start + " to " + end);
+		//console.log("Calculating from " + start + " to " + end);
 
 		calcRoute(start, end);
 	};
@@ -652,6 +645,7 @@ function Place( placeResult, placeService ) {
 		self.directionsDisplay.setPanel(document.getElementById("directions-text"));
 	}
 
+
 	this.showDirectionsMap = function () {
 		console.log("in showDirectionsMap");
 		//this.infowindow = new google.maps.InfoWindow();
@@ -681,18 +675,15 @@ function Place( placeResult, placeService ) {
 		google.maps.event.addDomListener(window, 'load', this.directionsMap);
 	};
 
+
 	this.closeDirections = function () {
-		console.log("In closeDirections -----------------");
 
 		// clear the directions text
 		this.directionsDisplay.setPanel(null);
-
-		//this.directionsDisplay.setMap(null);
 		this.directionsDisplay.setDirections({routes: []});
 
 		// todo: clear start location value
 
-		// $('.detail-page-top').css('height', '40%');
 		google.maps.event.trigger(this.miniMap, "resize");
 	};
 
