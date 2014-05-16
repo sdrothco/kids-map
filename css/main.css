@@ -128,14 +128,14 @@ header h1 {
 }
 
 /* line 102, ../sass/main.scss */
-.script {
+.script-font {
   font-family: 'Leckerli One', 'cursive';
   font-weight: normal;
   font-size: 1.3em;
 }
 
 /* line 107, ../sass/main.scss */
-.block {
+.block-font {
   font-family: 'Fredericka the Great', 'cursive';
   font-weight: normal;
   font-size: 2em;
@@ -711,4 +711,8 @@ span.stars span {
 /* line 595, ../sass/main.scss */
 .modal .right {
   text-align: right;
+}
+/* line 598, ../sass/main.scss */
+.modal .block {
+  display: block;
 }
