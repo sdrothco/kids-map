@@ -1,0 +1,10 @@
+
+Enhancements for Kids Map:
+
+- Photos section - when user clicks photo open it larger, either in new tab or in modal dialog box.
+- Paginate results - "Displaying 1-20 or XX results" "<Prev 1 2 3 Next>"
+- Add ability to search more categories - do a keyword search.
+- Add responsiveness
+- Add geolocation <find me> button near search box, or "use current location" in text box.
+  Accept or Deny/Decline is handled by browser geolocation?
+
